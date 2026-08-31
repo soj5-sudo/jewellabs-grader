@@ -4,28 +4,40 @@
 
 ## What we build
 
-ML automated diamond grading: software plus a physical scanning machine. A polished stone
-is scanned under controlled imaging, lighting and sensing conditions. The software reads the
-stone's visual and sensor signature, writes a structured fingerprint record, and converts that
-into an industry-aligned grade.
+ML automated diamond grading: software and a physical scanning machine. A polished
+stone is scanned under controlled imaging, lighting and sensing conditions. The
+software reads the stone's visual and sensor signature, writes a structured
+fingerprint record, and converts that into an industry-aligned grade.
 
-The system grades across the categories that determine value: cut, colour, clarity, carat,
-proportions, fluorescence, symmetry, polish, and the other optical and material signals that
-separate a natural stone from a grown one.
+The system grades across every category that determines value: cut, colour, clarity,
+carat, proportions, fluorescence, symmetry, polish, and the other optical and
+material signals that separate a natural stone from a grown one.
 
-The software can be sold standalone to businesses that already run imaging workflows. The
-machine adds controlled scanning conditions, data capture and high-throughput operation.
+The software can be sold on its own to businesses that already run imaging
+workflows. The machine adds the controlled conditions, the data capture and the
+throughput.
+
+## How it works
+
+1. Load. The stone drops into a sealed chamber, where outside light never reaches it.
+2. Light. Calibrated arrays cycle through brightfield, darkfield and raking light. A 365 nm pass reads fluorescence.
+3. Measure. Structured light maps the facets. A load cell takes carat weight on the same stage.
+4. Separate. A spectrometer reads the optical signature, which is what tells natural from CVD and HPHT.
+5. Grade. The model assigns every category that carries price, each with a confidence value.
+6. Record. A fingerprint record is written, and everything downstream is built from it.
 
 ## Throughput
 
-A human grader evaluates one stone at a time and a high volume parcel can take days. The
-machine is designed for parallel scanning at a target throughput of thousands of diamonds per
-hour, turning grading from a manual bottleneck into an automated data pipeline.
+A human grader evaluates one stone at a time and a high volume parcel can take days.
+The machine is designed for parallel scanning at a target throughput of thousands of
+diamonds per hour, turning grading from a manual bottleneck into an automated data
+pipeline.
 
 ## The layer above
 
-Every scan writes a fingerprint record. A second machine learning layer reads those records and
-moves the documents between houses and their agents.
+A second machine learning layer reads the records and assembles the filing, including
+the EU due diligence statement, moving documents between houses and their agents. If a
+stone's paperwork and its scan disagree, it blocks on the desk instead of at the border.
 
 ## Contact
 
@@ -34,3 +46,8 @@ Parent: https://jewellabs.io/
 Email: soj5@cornell.edu
 Book a demo: https://cal.com/soham-jariwala-4fvbkw/15min
 LinkedIn: https://www.linkedin.com/in/soham-jariwala-18297520a
+
+## Note
+
+The grading report and due diligence statement shown on the site are specimens
+rendered for demonstration. Neither is a valid certificate.
