@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="theme-color" content="#FFFFFF" />
-<link rel="icon" href="favicon.svg?v=3" type="image/svg+xml" sizes="any" />
-<link rel="apple-touch-icon" href="favicon.svg?v=3" />
+<meta name="theme-color" content="#000000" />
+<link rel="icon" href="favicon.svg?v=4" type="image/svg+xml" sizes="any" />
+<link rel="apple-touch-icon" href="favicon.svg?v=4" />
 
 <title>Jewel Labs</title>
 <meta name="description" content="Hard tech for the diamond trade. ML automated diamond grading: software and a scanning machine that read cut, colour, clarity, carat, proportions, fluorescence, symmetry and polish, and write a structured record for every stone." />
@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Inter:wght@300;400;450;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="style.css?v=3" />
+<link rel="stylesheet" href="style.css?v=4" />
 <script>document.documentElement.classList.add('js')</script>
 
 <script type="application/ld+json">
@@ -48,6 +48,29 @@
 
 <body>
 
+<canvas id="ambient" aria-hidden="true"></canvas>
+<canvas id="stage" aria-hidden="true"></canvas>
+<div id="veil" aria-hidden="true"></div>
+<script>
+/* The intro must clear itself even if the module never loads. */
+setTimeout(function () {
+  var v = document.getElementById('veil');
+  if (v && v.parentNode) v.parentNode.removeChild(v);
+  var s = document.getElementById('stage');
+  if (s && s.parentNode) s.parentNode.removeChild(s);
+  document.body.classList.add('ready');
+  // this script hid the tagline and the record; if app.js never ran, nothing
+  // else will ever show them again
+  var each = function (sel, cls) {
+    Array.prototype.forEach.call(document.querySelectorAll(sel), function (el) {
+      el.classList.add(cls);
+    });
+  };
+  each('#tagline span', 'in');
+  each('.readout b', 'set');
+}, 7000);
+</script>
+
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="nav" id="nav">
@@ -57,25 +80,21 @@
       <line x1="12" y1="2.5" x2="12" y2="7.5"/><line x1="12" y1="21.5" x2="12" y2="16.5"/>
       <line x1="2.5" y1="12" x2="7.5" y2="12"/><line x1="21.5" y1="12" x2="16.5" y2="12"/>
     </svg>
-    <span>JEWELLABS</span>
+    <span translate="no">JEWEL&nbsp;LABS</span>
   </a>
-  <a class="btn btn--dark btn--sm" href="#contact">Book a demo</a>
+  <a class="btn btn--line btn--sm" href="#contact">Book a demo</a>
 </header>
 
-<main id="main">
+<main id="main" tabindex="-1">
 
 <!-- ─────────── HERO ─────────── -->
 <section class="hero" id="top">
-  <div class="stone">
-    <canvas id="gem" aria-label="A round brilliant diamond, turning."></canvas>
-    <canvas id="dust" aria-hidden="true"></canvas>
-  </div>
-  <h1 class="wordmark">Jewel&nbsp;Labs</h1>
+  <h1 class="wordmark" translate="no">Jewel&nbsp;Labs</h1>
   <p class="tagline" id="tagline" aria-label="Hard tech for the diamond trade.">
     <span>Hard</span> <span>tech</span> <span>for</span> <span>the</span> <span>diamond</span> <span>trade.</span>
   </p>
   <div class="cta" id="cta">
-    <a class="btn btn--dark" href="#contact">Book a demo</a>
+    <a class="btn btn--solid" href="#contact">Book a demo</a>
     <a class="btn btn--line" href="#how">How it works</a>
   </div>
 </section>
@@ -86,51 +105,68 @@
   <div class="band__body">
     <h2 class="h2">ML automated diamond grading.</h2>
     <p class="lede">
-      Software and a scanning machine. A polished stone goes in, sensors read it under
-      controlled conditions, a model grades it, and a structured record comes out.
+      A polished stone goes in. Sensors read it under controlled light, a model grades it, and a
+      record comes out that the filing is then built from.
     </p>
     <p class="sub">
-      The software runs on its own for houses that already image their goods. The machine adds
-      the controlled conditions and the throughput.
+      The software runs today. The machine is in development, and the throughput figures below are
+      design targets.
     </p>
   </div>
 </section>
 
-<!-- ─────────── 02 ─────────── -->
-<section class="band" id="how">
+<!-- ─────────── 02 SCAN ─────────── -->
+<section class="band band--wide" id="scan">
   <p class="num">02</p>
   <div class="band__body">
-    <h2 class="h2">How it works.</h2>
-    <ol class="steps">
-      <li><span class="steps__n">01</span><span class="steps__t">Load</span><span class="steps__b">The stone drops into a sealed chamber. Outside light never reaches it, which is why the numbers repeat.</span></li>
-      <li><span class="steps__n">02</span><span class="steps__t">Light</span><span class="steps__b">Calibrated arrays cycle through brightfield, darkfield and raking light. A 365 nm pass reads fluorescence.</span></li>
-      <li><span class="steps__n">03</span><span class="steps__t">Measure</span><span class="steps__b">Structured light maps the facets. A load cell takes carat weight on the same stage.</span></li>
-      <li><span class="steps__n">04</span><span class="steps__t">Separate</span><span class="steps__b">A spectrometer reads the optical signature. That is what tells natural from CVD and HPHT.</span></li>
-      <li><span class="steps__n">05</span><span class="steps__t">Grade</span><span class="steps__b">The model assigns every category that carries price, each with a confidence value.</span></li>
-      <li><span class="steps__n">06</span><span class="steps__t">Record</span><span class="steps__b">A fingerprint record is written. Everything downstream is built from it.</span></li>
-    </ol>
+    <h2 class="h2">One stone, read.</h2>
+    <p class="lede">The chamber holds the stone still under known light.</p>
+
+    <div class="bay">
+      <div class="bay__view">
+        <canvas id="scan-canvas" role="img" aria-label="A diamond turning while a measurement pass reads it."></canvas>
+        <span class="bay__tag">Chamber</span>
+      </div>
+      <div class="bay__read">
+        <p class="bay__k">Reading</p>
+        <ul class="readout">
+          <li><span>Carat</span><b data-r="carat">0.164&nbsp;ct</b></li>
+          <li><span>Colour</span><b data-r="colour">G</b></li>
+          <li><span>Clarity</span><b data-r="clarity">VS2</b></li>
+          <li><span>Cut</span><b data-r="cut">Excellent</b></li>
+          <li><span>Table</span><b data-r="table">57.0%</b></li>
+          <li><span>Depth</span><b data-r="depth">61.4%</b></li>
+          <li><span>Fluorescence</span><b data-r="fluor">Faint blue</b></li>
+          <li><span>Origin</span><b data-r="origin">Natural</b></li>
+        </ul>
+        <p class="bay__foot">Illustrative of the record the system writes.</p>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- ─────────── 03 ─────────── -->
-<section class="band" id="reads">
+<section class="band" id="how">
   <p class="num">03</p>
   <div class="band__body">
-    <h2 class="h2">Every category that sets the price.</h2>
-    <ul class="grid8">
-      <li>Cut</li><li>Colour</li><li>Clarity</li><li>Carat</li>
-      <li>Proportions</li><li>Fluorescence</li><li>Symmetry</li><li>Polish</li>
-    </ul>
-    <p class="sub">Plus the optical and material signals that separate a natural stone from a grown one.</p>
+    <h2 class="h2">How it works.</h2>
+    <ol class="steps">
+      <li><span class="steps__n">01</span><span class="steps__t">Load</span><span class="steps__b">Sealed chamber. No outside light, which is why the numbers repeat.</span></li>
+      <li><span class="steps__n">02</span><span class="steps__t">Light</span><span class="steps__b">Calibrated arrays, plus a 365&nbsp;nm pass for fluorescence.</span></li>
+      <li><span class="steps__n">03</span><span class="steps__t">Measure</span><span class="steps__b">Structured light maps the facets. A load cell takes the weight.</span></li>
+      <li><span class="steps__n">04</span><span class="steps__t">Separate</span><span class="steps__b">A spectrometer separates natural from CVD and HPHT.</span></li>
+      <li><span class="steps__n">05</span><span class="steps__t">Grade</span><span class="steps__b">The model assigns every category that carries price, with a confidence.</span></li>
+      <li><span class="steps__n">06</span><span class="steps__t">File</span><span class="steps__b">A second model turns those records into the customs filing.</span></li>
+    </ol>
   </div>
 </section>
 
-<!-- ─────────── 04 ─────────── -->
+<!-- ─────────── 05 ─────────── -->
 <section class="band" id="record">
   <p class="num">04</p>
   <div class="band__body">
     <h2 class="h2">The record.</h2>
-    <p class="lede">Not a picture of a stone. A row every other system can read.</p>
+    <p class="lede">A row every other system can read.</p>
 
     <article class="doc">
       <header class="doc__head">
@@ -140,13 +176,12 @@
         </div>
         <p class="doc__stamp">Specimen</p>
       </header>
-
       <div class="doc__grid">
-        <div><span>Report number</span><b>JL-2026-0417739</b></div>
+        <div><span>Report number</span><b translate="no">JL-2026-0417739</b></div>
         <div><span>Date</span><b>14 March 2026</b></div>
         <div><span>Shape and cutting style</span><b>Round brilliant</b></div>
-        <div><span>Measurements</span><b>3.34 to 3.37 x 2.06 mm</b></div>
-        <div><span>Carat weight</span><b>0.164 ct</b></div>
+        <div><span>Measurements</span><b>3.52 to 3.55 x 2.17&nbsp;mm</b></div>
+        <div><span>Carat weight</span><b>0.164&nbsp;ct</b></div>
         <div><span>Colour grade</span><b>G</b></div>
         <div><span>Clarity grade</span><b>VS2</b></div>
         <div><span>Cut grade</span><b>Excellent</b></div>
@@ -160,9 +195,8 @@
         <div><span>Girdle</span><b>Medium to slightly thick, faceted</b></div>
         <div><span>Culet</span><b>None</b></div>
         <div><span>Origin</span><b>Natural</b></div>
-        <div class="doc__wide"><span>Optical fingerprint</span><b class="mono">4f2a 91c7 0d55 b83e 71aa</b></div>
+        <div class="doc__wide"><span>Optical fingerprint</span><b class="mono" translate="no">4f2a&nbsp;91c7&nbsp;0d55&nbsp;b83e&nbsp;71aa</b></div>
       </div>
-
       <p class="doc__note">
         Grades are machine assigned from measured optical, spectral and dimensional signals.
         Laboratory grown stones are recorded as laboratory grown. Specimen shown for
@@ -172,50 +206,46 @@
   </div>
 </section>
 
-<!-- ─────────── 05 ─────────── -->
+<!-- ─────────── 06 ─────────── -->
 <section class="band" id="paperwork">
   <p class="num">05</p>
   <div class="band__body">
-    <h2 class="h2">The paperwork builds itself.</h2>
+    <h2 class="h2">The filing.</h2>
     <p class="lede">
-      A second model reads the records and assembles the filing, so the file is done while the
-      goods are still on the desk. If a stone's paperwork and its scan disagree, it blocks there
-      instead of at the border.
+      Assembled from the records, while the goods are still on the desk. If the paperwork and the
+      scan disagree, it blocks there instead of at the border.
     </p>
 
     <article class="doc">
       <header class="doc__head">
         <div>
           <p class="doc__title">Due Diligence Statement</p>
-          <p class="doc__sub">Import of diamonds into the European Union</p>
+          <p class="doc__sub">Import of diamonds into the European Union, Council Regulation (EU) 833/2014</p>
         </div>
         <p class="doc__stamp">Specimen</p>
       </header>
-
       <div class="doc__grid">
-        <div><span>Statement number</span><b>DDS-EU-2026-004417</b></div>
+        <div><span>Statement number</span><b translate="no">DDS-EU-2026-004417</b></div>
         <div><span>Date</span><b>14 March 2026</b></div>
         <div><span>Declarant</span><b>Palak Diam Exports</b></div>
-        <div><span>EORI</span><b>BE0447882913</b></div>
+        <div><span>EORI</span><b translate="no">BE0447882913</b></div>
         <div><span>Point of entry</span><b>Antwerp, Belgium</b></div>
-        <div><span>Consignment</span><b>PRC-88231</b></div>
-        <div><span>Harmonised System code</span><b>7102.39</b></div>
+        <div><span>Consignment</span><b translate="no">PRC-88231</b></div>
+        <div><span>Harmonised System code</span><b translate="no">7102.39</b></div>
         <div><span>Stones</span><b>214</b></div>
-        <div><span>Total carat weight</span><b>31.86 ct</b></div>
+        <div><span>Total carat weight</span><b>31.86&nbsp;ct</b></div>
         <div><span>Country of origin</span><b>Botswana</b></div>
         <div><span>Last processing</span><b>India</b></div>
         <div><span>Traceability</span><b>Per stone optical fingerprint</b></div>
       </div>
-
       <div class="doc__list">
         <p class="doc__k">Records assembled</p>
         <ol>
-          <li>Kimberley Process certificate of origin, BW-2025-114872</li>
+          <li>Kimberley Process certificate for the parent rough, BW-2025-114872, retained as origin evidence</li>
           <li>Commercial invoice INV-2026-0331</li>
           <li>Grader records JL-2026-0417526 to JL-2026-0417739, 214 stones</li>
         </ol>
       </div>
-
       <p class="doc__note">
         The declarant confirms that due diligence has been exercised on this consignment and that
         no stone in it was mined, processed or produced in the Russian Federation. Every record
@@ -226,7 +256,7 @@
   </div>
 </section>
 
-<!-- ─────────── 06 ─────────── -->
+<!-- ─────────── 07 ─────────── -->
 <section class="band" id="throughput">
   <p class="num">06</p>
   <div class="band__body">
@@ -247,38 +277,50 @@
 </section>
 
 <!-- ─────────── CONTACT ─────────── -->
-<section class="band band--end" id="contact">
+<section class="band band--wide band--end" id="contact">
   <p class="num">07</p>
   <div class="band__body">
     <h2 class="h2">See it read a parcel.</h2>
+    <p class="lede">Bring goods you already know the answer on.</p>
+
+    <div class="cal" id="cal"
+         data-src="https://cal.com/soham-jariwala-4fvbkw/15min?embed=true&amp;theme=dark">
+      <div class="cal__gate" id="calGate">
+        <p class="cal__k">Booking calendar</p>
+        <p class="cal__b">Opens here on this page. It is hosted by Cal.com, so nothing is requested from them until you open it.</p>
+        <button class="btn btn--solid" type="button" id="calOpen">Open the calendar</button>
+      </div>
+    </div>
+    <p class="cal__alt">
+      <a href="https://cal.com/soham-jariwala-4fvbkw/15min" target="_blank" rel="noopener noreferrer">Or open the booking page in a new tab</a>
+    </p>
 
     <form class="wl" id="waitlist" novalidate>
       <label class="sr" for="email">Email address</label>
       <input class="wl__in" id="email" name="email" type="email" inputmode="email"
-             autocomplete="email" placeholder="Put your email to join the waitlist" required />
-      <button class="btn btn--dark" type="submit">Join</button>
+             autocomplete="email" placeholder="you@company.com" spellcheck="false" required
+             aria-describedby="waitlistMsg" />
+      <button class="btn btn--line" type="submit">Join</button>
     </form>
-    <p class="wl__msg" id="waitlistMsg" role="status" aria-live="polite"></p>
-
-    <div class="cta cta--left">
-      <a class="btn btn--line" href="https://cal.com/soham-jariwala-4fvbkw/15min" target="_blank" rel="noopener noreferrer">Book a demo</a>
-      <a class="btn btn--line" href="https://www.linkedin.com/in/soham-jariwala-18297520a" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-    </div>
+    <p class="wl__msg" id="waitlistMsg" role="status" aria-live="polite" tabindex="-1"></p>
   </div>
 </section>
 
 </main>
 
 <footer class="foot">
-  <span>Jewel Labs</span>
-  <nav class="foot__nav" aria-label="Footer">
-    <a href="mailto:soj5@cornell.edu">soj5@cornell.edu</a>
-    <a href="privacy.html">Privacy</a>
-    <a href="terms.html">Terms</a>
-  </nav>
+  <div class="foot__row">
+    <span class="foot__brand">Jewel Labs</span>
+    <nav class="foot__nav" aria-label="Footer">
+      <a href="mailto:soj5@cornell.edu">soj5@cornell.edu</a>
+      <a href="https://www.linkedin.com/in/soham-jariwala-18297520a" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://jewellabs.io/" target="_blank" rel="noopener noreferrer">jewellabs.io</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+    </nav>
+  </div>
 </footer>
 
-<script src="app.js?v=3" defer></script>
-<script type="module" src="hero.js?v=3"></script>
+<script src="app.js?v=4" defer></script>
 </body>
 </html>
