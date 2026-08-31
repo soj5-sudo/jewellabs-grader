@@ -297,7 +297,7 @@
       if (wordsRun) return;
       wordsRun = true;
       words.forEach(function (w, i) {
-        setTimeout(function () { w.classList.add('in'); }, delay + i * 100);
+        setTimeout(function () { w.classList.add('in'); }, delay + i * 130);
       });
     }
     function strip() {
@@ -403,7 +403,7 @@
       var rx = 0.36 + Math.sin((now - T0) * 0.00042) * 0.055;
 
       if (veil) veil.style.opacity = clamp(1 - out * 1.6, 0, 1).toFixed(3);
-      if (!handed && out > 0.06) { handed = true; handOver(); runWords(520); }
+      if (!handed && out > 0.06) { handed = true; handOver(); runWords(1000); }
 
       for (var i = 0; i < N; i++) {
         var p = parts[i];
@@ -634,13 +634,25 @@
     if (!items.length) return;
     items.forEach(function (el) { el.classList.add('rv'); });
 
+    // Parts of a section arrive one after another rather than all together,
+    // so the page reads as unfolding while you scroll.
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) {
         if (!e.isIntersecting) return;
-        e.target.classList.add('in');
-        io.unobserve(e.target);
+        var el = e.target;
+        var host = el.closest ? el.closest('.band__body') : null;
+        var step = 0;
+        if (host) {
+          var sibs = Array.prototype.filter.call(host.querySelectorAll('.rv'), function (n) {
+            return !n.classList.contains('in');
+          });
+          step = Math.min(sibs.indexOf(el), 4);
+        }
+        el.style.transitionDelay = (step > 0 ? step * 90 : 0) + 'ms';
+        el.classList.add('in');
+        io.unobserve(el);
       });
-    }, { rootMargin: '0px 0px -5% 0px', threshold: 0.04 });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.02 });
     items.forEach(function (el) { io.observe(el); });
 
     // No blanket timer here on purpose. It fired whenever the visitor had not

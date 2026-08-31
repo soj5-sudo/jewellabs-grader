@@ -162,10 +162,15 @@ body.ready .wordmark { opacity: 1; }
 }
 .tagline span { display: inline-block; }
 .js .tagline span {
-  opacity: 0; transform: translateY(9px);
-  transition: opacity 620ms var(--ease), transform 620ms var(--ease);
+  clip-path: inset(0 101% 0 -3%);
+  -webkit-clip-path: inset(0 101% 0 -3%);
 }
-.tagline span.in, body.ready .tagline span { opacity: 1; transform: none; }
+.tagline span.in {
+  clip-path: inset(0 -3% 0 -3%);
+  -webkit-clip-path: inset(0 -3% 0 -3%);
+  transition: clip-path 230ms cubic-bezier(0.22, 0.61, 0.36, 1),
+              -webkit-clip-path 230ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
 
 .cta { display: flex; flex-wrap: wrap; gap: 11px; justify-content: center; margin-top: clamp(30px, 4.2vw, 48px); }
 .js #cta { opacity: 0; transition: opacity 700ms var(--ease) 200ms; }
@@ -230,7 +235,7 @@ body.ready #cta { opacity: 1; }
 .readout b { font-weight: 450; color: var(--text); font-variant-numeric: tabular-nums; }
 /* the value settles in once, and then stays put */
 .js .readout b { opacity: 0; transition: opacity 420ms var(--ease); }
-.js .readout b.set, body.ready .readout b { opacity: 1; }
+.js .readout b.set { opacity: 1; }
 .bay__foot { margin-top: 20px; font-size: 12px; color: var(--text-3); }
 
 /* ═════════ STEPS ═════════ */
@@ -298,8 +303,8 @@ body.ready #cta { opacity: 1; }
 .foot__nav a:hover { color: var(--text); }
 
 /* ═════════ REVEAL ═════════ */
-.rv { opacity: 0; transform: translateY(12px); }
-.rv.in { opacity: 1; transform: none; transition: opacity 680ms var(--ease), transform 680ms var(--ease); }
+.rv { opacity: 0; transform: translateY(14px); }
+.rv.in { opacity: 1; transform: none; transition: opacity 720ms var(--ease), transform 720ms var(--ease); }
 
 /* ═════════ LEGAL ═════════ */
 .legal { max-width: 700px; margin: 0 auto; padding: 140px 24px 84px; position: relative; z-index: 2; }
@@ -340,6 +345,7 @@ body.ready #cta { opacity: 1; }
     transition-duration: 0.01ms !important;
   }
   .wordmark, .tagline span, #cta, .rv, .readout b { opacity: 1 !important; transform: none !important; }
+  .tagline span { clip-path: none !important; -webkit-clip-path: none !important; }
   #veil, #stage { display: none !important; }
   .hero__stone { visibility: visible !important; }
 }
@@ -449,7 +455,9 @@ body.stone-home .hero__stone { visibility: visible; }
   .sheet { padding: 32px 24px 30px; }
   .sheet__cols { grid-template-columns: 1fr; gap: 0; }
   .sheet__top { flex-direction: column; gap: 14px; }
-  .sheet__meta { text-align: left; }
+  .sheet__meta { text-align: left; white-space: normal; }
+  .rows dt { white-space: normal; }
+  .rows > div { flex-wrap: wrap; }
   .sheet__stamp { bottom: 22px; left: 24px; }
   .sheet__sig { min-width: 0; }
   .rows dd { white-space: normal; }
