@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" href="favicon.svg?v=4" />
 
 <title>Jewel Labs</title>
-<meta name="description" content="Hard tech for the diamond trade. ML automated diamond grading: software and a scanning machine that read cut, colour, clarity, carat, proportions, fluorescence, symmetry and polish, and write a structured record for every stone." />
+<meta name="description" content="Hard tech for the diamond trade. The first ML automated desk diamond grader: a scanning machine that fits on a trading desk, grades a polished stone across every category that carries price, and writes the record the customs filing is built from." />
 <meta name="author" content="Jewel Labs" />
 <link rel="canonical" href="https://grader.jewellabs.io/" />
 <meta name="robots" content="index, follow, max-image-preview:large" />
@@ -39,7 +39,7 @@
   "name": "Jewel Labs",
   "url": "https://grader.jewellabs.io/",
   "logo": "https://grader.jewellabs.io/favicon.svg",
-  "description": "Hard tech for the diamond trade. Jewel Labs builds ML automated diamond grading: software and a physical scanning machine that grade polished diamonds across cut, colour, clarity, carat, proportions, fluorescence, symmetry and polish, and write a structured record for every stone.",
+  "description": "Hard tech for the diamond trade. Jewel Labs builds the first ML automated desk diamond grader: software and a portable scanning machine that grade polished diamonds across cut, colour, clarity, carat, proportions, fluorescence, symmetry and polish, and write the structured record the customs filing is built from.",
   "email": "mailto:soj5@cornell.edu",
   "sameAs": ["https://www.linkedin.com/in/soham-jariwala-18297520a", "https://jewellabs.io/"]
 }
@@ -80,7 +80,6 @@ setTimeout(function () {
       <line x1="12" y1="2.5" x2="12" y2="7.5"/><line x1="12" y1="21.5" x2="12" y2="16.5"/>
       <line x1="2.5" y1="12" x2="7.5" y2="12"/><line x1="21.5" y1="12" x2="16.5" y2="12"/>
     </svg>
-    <span translate="no">JEWEL&nbsp;LABS</span>
   </a>
   <a class="btn btn--line btn--sm" href="#contact">Book a demo</a>
 </header>
@@ -89,6 +88,7 @@ setTimeout(function () {
 
 <!-- ─────────── HERO ─────────── -->
 <section class="hero" id="top">
+  <div class="hero__stone"><canvas id="heroGem" aria-hidden="true"></canvas></div>
   <h1 class="wordmark" translate="no">Jewel&nbsp;Labs</h1>
   <p class="tagline" id="tagline" aria-label="Hard tech for the diamond trade.">
     <span>Hard</span> <span>tech</span> <span>for</span> <span>the</span> <span>diamond</span> <span>trade.</span>
@@ -103,10 +103,12 @@ setTimeout(function () {
 <section class="band" id="what">
   <p class="num">01</p>
   <div class="band__body">
-    <h2 class="h2">ML automated diamond grading.</h2>
+    <p class="kicker">The first of its kind</p>
+    <h2 class="h2">ML automated desk diamond grader.</h2>
     <p class="lede">
-      A polished stone goes in. Sensors read it under controlled light, a model grades it, and a
-      record comes out that the filing is then built from.
+      It fits on a trading desk and travels in a carry-on. A polished stone goes in, sensors read
+      it under controlled light, a model grades it, and out comes a record the customs filing is
+      then built from.
     </p>
     <p class="sub">
       The software runs today. The machine is in development, and the throughput figures below are
@@ -168,40 +170,50 @@ setTimeout(function () {
     <h2 class="h2">The record.</h2>
     <p class="lede">A row every other system can read.</p>
 
-    <article class="doc">
-      <header class="doc__head">
+    <article class="sheet" translate="no">
+      <div class="sheet__top">
         <div>
-          <p class="doc__title">Grading Report</p>
-          <p class="doc__sub">Jewel Labs, automated</p>
+          <p class="sheet__org">Jewel Labs</p>
+          <p class="sheet__kind">Diamond Grading Report</p>
         </div>
-        <p class="doc__stamp">Specimen</p>
-      </header>
-      <div class="doc__grid">
-        <div><span>Report number</span><b translate="no">JL-2026-0417739</b></div>
-        <div><span>Date</span><b>14 March 2026</b></div>
-        <div><span>Shape and cutting style</span><b>Round brilliant</b></div>
-        <div><span>Measurements</span><b>3.52 to 3.55 x 2.17&nbsp;mm</b></div>
-        <div><span>Carat weight</span><b>0.164&nbsp;ct</b></div>
-        <div><span>Colour grade</span><b>G</b></div>
-        <div><span>Clarity grade</span><b>VS2</b></div>
-        <div><span>Cut grade</span><b>Excellent</b></div>
-        <div><span>Polish</span><b>Excellent</b></div>
-        <div><span>Symmetry</span><b>Very good</b></div>
-        <div><span>Fluorescence</span><b>Faint blue</b></div>
-        <div><span>Table</span><b>57.0%</b></div>
-        <div><span>Depth</span><b>61.4%</b></div>
-        <div><span>Crown angle</span><b>34.6&deg;</b></div>
-        <div><span>Pavilion angle</span><b>40.9&deg;</b></div>
-        <div><span>Girdle</span><b>Medium to slightly thick, faceted</b></div>
-        <div><span>Culet</span><b>None</b></div>
-        <div><span>Origin</span><b>Natural</b></div>
-        <div class="doc__wide"><span>Optical fingerprint</span><b class="mono" translate="no">4f2a&nbsp;91c7&nbsp;0d55&nbsp;b83e&nbsp;71aa</b></div>
+        <div class="sheet__meta">
+          <p>No. JL-2026-0417739</p>
+          <p>14 March 2026</p>
+        </div>
       </div>
-      <p class="doc__note">
-        Grades are machine assigned from measured optical, spectral and dimensional signals.
-        Laboratory grown stones are recorded as laboratory grown. Specimen shown for
-        demonstration, not a valid certificate.
+
+      <div class="sheet__cols">
+        <dl class="rows">
+          <div><dt>Shape and cutting style</dt><i></i><dd>Round brilliant</dd></div>
+          <div><dt>Measurements</dt><i></i><dd>3.52 to 3.55 x 2.17&nbsp;mm</dd></div>
+          <div><dt>Carat weight</dt><i></i><dd>0.164&nbsp;ct</dd></div>
+          <div><dt>Colour grade</dt><i></i><dd>G</dd></div>
+          <div><dt>Clarity grade</dt><i></i><dd>VS2</dd></div>
+          <div><dt>Cut grade</dt><i></i><dd>Excellent</dd></div>
+        </dl>
+        <dl class="rows">
+          <div><dt>Polish</dt><i></i><dd>Excellent</dd></div>
+          <div><dt>Symmetry</dt><i></i><dd>Very good</dd></div>
+          <div><dt>Fluorescence</dt><i></i><dd>Faint blue</dd></div>
+          <div><dt>Table / Depth</dt><i></i><dd>57.0% / 61.4%</dd></div>
+          <div><dt>Crown / Pavilion</dt><i></i><dd>34.6&deg; / 40.9&deg;</dd></div>
+          <div><dt>Origin</dt><i></i><dd>Natural</dd></div>
+        </dl>
+      </div>
+
+      <p class="sheet__note">
+        Girdle medium to slightly thick, faceted. Culet none. Optical fingerprint
+        <span class="mono">4f2a&nbsp;91c7&nbsp;0d55&nbsp;b83e&nbsp;71aa</span>.
       </p>
+
+      <div class="sheet__foot">
+        <div class="sheet__sign">
+          <p class="sheet__sig">Measured and signed at capture</p>
+          <p class="sheet__cap">Unit JL-0412, calibration verified 12 March 2026</p>
+        </div>
+        <div class="seal" aria-hidden="true"><span>JL</span></div>
+      </div>
+      <p class="sheet__stamp">Specimen</p>
     </article>
   </div>
 </section>
@@ -216,42 +228,54 @@ setTimeout(function () {
       scan disagree, it blocks there instead of at the border.
     </p>
 
-    <article class="doc">
-      <header class="doc__head">
+    <article class="sheet" translate="no">
+      <div class="sheet__top">
         <div>
-          <p class="doc__title">Due Diligence Statement</p>
-          <p class="doc__sub">Import of diamonds into the European Union, Council Regulation (EU) 833/2014</p>
+          <p class="sheet__org">Palak Diam Exports</p>
+          <p class="sheet__kind">Due Diligence Statement</p>
+          <p class="sheet__basis">Council Regulation (EU) 833/2014, as amended</p>
         </div>
-        <p class="doc__stamp">Specimen</p>
-      </header>
-      <div class="doc__grid">
-        <div><span>Statement number</span><b translate="no">DDS-EU-2026-004417</b></div>
-        <div><span>Date</span><b>14 March 2026</b></div>
-        <div><span>Declarant</span><b>Palak Diam Exports</b></div>
-        <div><span>EORI</span><b translate="no">BE0447882913</b></div>
-        <div><span>Point of entry</span><b>Antwerp, Belgium</b></div>
-        <div><span>Consignment</span><b translate="no">PRC-88231</b></div>
-        <div><span>Harmonised System code</span><b translate="no">7102.39</b></div>
-        <div><span>Stones</span><b>214</b></div>
-        <div><span>Total carat weight</span><b>31.86&nbsp;ct</b></div>
-        <div><span>Country of origin</span><b>Botswana</b></div>
-        <div><span>Last processing</span><b>India</b></div>
-        <div><span>Traceability</span><b>Per stone optical fingerprint</b></div>
+        <div class="sheet__meta">
+          <p>No. DDS-EU-2026-004417</p>
+          <p>14 March 2026</p>
+        </div>
       </div>
-      <div class="doc__list">
-        <p class="doc__k">Records assembled</p>
-        <ol>
-          <li>Kimberley Process certificate for the parent rough, BW-2025-114872, retained as origin evidence</li>
-          <li>Commercial invoice INV-2026-0331</li>
-          <li>Grader records JL-2026-0417526 to JL-2026-0417739, 214 stones</li>
-        </ol>
+
+      <div class="sheet__cols">
+        <dl class="rows">
+          <div><dt>Declarant</dt><i></i><dd>Palak Diam Exports</dd></div>
+          <div><dt>EORI</dt><i></i><dd>BE0447882913</dd></div>
+          <div><dt>Point of entry</dt><i></i><dd>Antwerp, Belgium</dd></div>
+          <div><dt>Consignment</dt><i></i><dd>PRC-88231</dd></div>
+        </dl>
+        <dl class="rows">
+          <div><dt>Commodity code</dt><i></i><dd>7102.39</dd></div>
+          <div><dt>Stones / weight</dt><i></i><dd>214 / 31.86&nbsp;ct</dd></div>
+          <div><dt>Country of origin</dt><i></i><dd>Botswana</dd></div>
+          <div><dt>Last processing</dt><i></i><dd>India</dd></div>
+        </dl>
       </div>
-      <p class="doc__note">
+
+      <p class="sheet__dec">
         The declarant confirms that due diligence has been exercised on this consignment and that
-        no stone in it was mined, processed or produced in the Russian Federation. Every record
-        reconciles with the documents above. Specimen shown for demonstration, not a valid
-        statement.
+        no stone in it was mined, processed or produced in the Russian Federation. Each stone
+        carries a machine measured record and an optical fingerprint taken before shipment, and
+        every record reconciles with the evidence held on file. No discrepancy is outstanding.
       </p>
+
+      <p class="sheet__note">
+        Evidence: Kimberley Process certificate for the parent rough BW-2025-114872, commercial
+        invoice INV-2026-0331, and grader records JL-2026-0417526 to JL-2026-0417739.
+      </p>
+
+      <div class="sheet__foot">
+        <div class="sheet__sign">
+          <p class="sheet__sig">S. Jariwala</p>
+          <p class="sheet__cap">Director, for and on behalf of the declarant</p>
+        </div>
+        <div class="seal" aria-hidden="true"><span>EU</span></div>
+      </div>
+      <p class="sheet__stamp">Specimen</p>
     </article>
   </div>
 </section>

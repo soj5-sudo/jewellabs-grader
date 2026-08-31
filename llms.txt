@@ -4,7 +4,8 @@
 
 ## What we build
 
-ML automated diamond grading: software and a physical scanning machine. A polished
+The first ML automated desk diamond grader: software and a portable scanning machine
+that fits on a trading desk and travels in a carry-on. A polished
 stone is scanned under controlled imaging, lighting and sensing conditions. The
 software reads the stone's visual and sensor signature, writes a structured
 fingerprint record, and converts that into an industry-aligned grade.

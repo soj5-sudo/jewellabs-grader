@@ -25,6 +25,8 @@
      take the nav, the reveal or the form down with it. */
   function layer(fn) { try { fn(); } catch (e) {} }
 
+  var T0 = performance.now();   // shared clock: intro and hero stone stay in step
+
   var dpr = function () { return Math.min(window.devicePixelRatio || 1, 2); };
 
   /* ── the stone ──────────────────────────────────────────
@@ -352,17 +354,32 @@
       ctx.globalCompositeOperation = 'lighter';
 
       var out = clamp((el - HOLD) / (GONE - HOLD), 0, 1);
-      var scale = Math.min(W, H) * (window.innerWidth >= 1024 ? 0.21 : 0.25);
-      var cx = W / 2, cy = H * 0.45;
-      var ry = el * 0.00040;
-      var rx = 0.36 + Math.sin(el * 0.00046) * 0.06;
+      var ease = easeInOut(out);
 
-      if (veil) {
-        var vo = clamp(1 - out * 1.3, 0, 1);
-        veil.style.opacity = vo.toFixed(3);
-        if (vo <= 0.01) veil.style.pointerEvents = 'none';
+      // where the stone lives once the intro is over
+      var slot = null;
+      var hero = document.getElementById('heroGem');
+      if (hero) {
+        var hr = hero.getBoundingClientRect();
+        if (hr.width > 2) {
+          slot = {
+            cx: (hr.left + hr.width / 2) * D,
+            cy: (hr.top + hr.height / 2) * D,
+            sc: Math.min(hr.width, hr.height) * D * 0.40
+          };
+        }
       }
-      if (!handed && el > HOLD + 300) { handed = true; handOver(); runWords(680); }
+
+      var bigScale = Math.min(W, H) * (window.innerWidth >= 1024 ? 0.21 : 0.25);
+      var scale = slot ? lerp(bigScale, slot.sc, ease) : bigScale;
+      var cx = slot ? lerp(W / 2, slot.cx, ease) : W / 2;
+      var cy = slot ? lerp(H * 0.45, slot.cy, ease) : H * 0.45;
+      var ry = (now - T0) * 0.00034;
+      var rx = 0.36 + Math.sin((now - T0) * 0.00042) * 0.055;
+
+      if (veil) veil.style.opacity = clamp(1 - out * 1.6, 0, 1).toFixed(3);
+      if (!handed && out > 0.06) { handed = true; handOver(); runWords(520); }
+      canvas.style.opacity = clamp(1 - (out - 0.86) / 0.14, 0, 1).toFixed(3);
 
       for (var i = 0; i < N; i++) {
         var p = parts[i];
@@ -372,11 +389,6 @@
         var q = project(gem[i], ry, rx, scale, cx, cy);
 
         var gx = q.x, gy = q.y;
-        if (out > 0) {
-          var push = out * out * 210 * D * p.dr;
-          gx += Math.cos(p.ph) * push;
-          gy += Math.sin(p.ph) * push - out * 52 * D;
-        }
 
         var jit = (1 - f) * 13 * D;
         var x = lerp(p.ox, gx, f) + Math.sin(el * 0.0036 + p.ph) * jit;
@@ -385,7 +397,7 @@
         var w = gem[i][3];
         var tw = 0.68 + 0.32 * Math.sin(el * 0.0026 + p.ph);
         var depth = clamp((q.d + 1.1) / 2.2, 0, 1);
-        var alpha = (0.40 + 0.62 * depth) * tw * f * (1 - out) * w;
+        var alpha = (0.40 + 0.62 * depth) * tw * f * w;
         if (alpha <= 0.005) continue;
 
         var s = (1.05 + 1.55 * depth + 0.55 * tw) * (0.6 + 0.4 * w) * D;
@@ -399,6 +411,71 @@
       if (el > GONE + 100) { finish(); return; }
       raf = requestAnimationFrame(frame);
     });
+  });
+
+  /* ══════════════ THE HERO STONE ══════════════
+     Where the intro puts the stone down. Same geometry, same clock, so the
+     handoff has nothing to jump between. */
+  layer(function () {
+    var canvas = qs('#heroGem');
+    if (!canvas || !SPRITE) return;
+    var ctx = null;
+    try { ctx = canvas.getContext('2d'); } catch (e) {}
+    if (!ctx) return;
+
+    var W = 0, H = 0, raf = 0, live = false;
+    var pts = seed(window.innerWidth < 720 ? 1100 : 1900);
+
+    function size() {
+      var r = canvas.getBoundingClientRect();
+      var D = dpr();
+      W = Math.max(2, Math.round(r.width * D));
+      H = Math.max(2, Math.round(r.height * D));
+      canvas.width = W; canvas.height = H;
+    }
+
+    function paint(now) {
+      var D = dpr();
+      ctx.clearRect(0, 0, W, H);
+      ctx.globalCompositeOperation = 'lighter';
+
+      var el = now - T0;
+      var scale = Math.min(W, H) * 0.40;
+      var cx = W / 2, cy = H / 2;
+      var ry = el * 0.00034;
+      var rx = 0.36 + Math.sin(el * 0.00042) * 0.055;
+
+      for (var i = 0; i < pts.length; i++) {
+        var q = project(pts[i], ry, rx, scale, cx, cy);
+        var w = pts[i][3];
+        var depth = clamp((q.d + 1.1) / 2.2, 0, 1);
+        var tw = 0.70 + 0.30 * Math.sin(el * 0.0024 + i);
+        var alpha = clamp((0.34 + 0.60 * depth) * tw * w, 0, 1);
+        var sz = (1.0 + 1.5 * depth) * (0.6 + 0.4 * w) * D;
+        ctx.globalAlpha = alpha;
+        ctx.drawImage(SPRITE, q.x - sz / 2, q.y - sz / 2, sz, sz);
+      }
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = 'source-over';
+    }
+
+    function loop(now) { if (!live) return; paint(now); raf = requestAnimationFrame(loop); }
+    function start() { if (live) return; live = true; raf = requestAnimationFrame(loop); }
+    function stop() { live = false; cancelAnimationFrame(raf); }
+
+    var rt;
+    window.addEventListener('resize', function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { size(); if (!live) paint(performance.now()); }, 160);
+    });
+
+    size();
+    if (reduced) { paint(T0 + 4000); return; }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) { e.isIntersecting ? start() : stop(); });
+      }, { threshold: 0.02 }).observe(canvas);
+    } else { start(); }
   });
 
   /* ══════════════ THE CHAMBER ══════════════ */
@@ -545,7 +622,7 @@
   layer(function () {
     if (reduced || !('IntersectionObserver' in window)) return;
     var items = Array.prototype.slice.call(
-      document.querySelectorAll('.band .h2, .band .lede, .band .sub, .steps, .grid8, .doc, .compare, .bay, .cal, .wl')
+      document.querySelectorAll('.band .kicker, .band .h2, .band .lede, .band .sub, .steps, .sheet, .compare, .bay, .cal, .wl')
     );
     if (!items.length) return;
     items.forEach(function (el) { el.classList.add('rv'); });
