@@ -68,6 +68,7 @@ setTimeout(function () {
   };
   each('#tagline span', 'in');
   each('.readout b', 'set');
+  document.body.classList.add('stone-home');
 }, 7000);
 </script>
 
@@ -80,6 +81,7 @@ setTimeout(function () {
       <line x1="12" y1="2.5" x2="12" y2="7.5"/><line x1="12" y1="21.5" x2="12" y2="16.5"/>
       <line x1="2.5" y1="12" x2="7.5" y2="12"/><line x1="21.5" y1="12" x2="16.5" y2="12"/>
     </svg>
+    <span translate="no">Jewel&nbsp;Labs</span>
   </a>
   <a class="btn btn--line btn--sm" href="#contact">Book a demo</a>
 </header>
@@ -270,8 +272,8 @@ setTimeout(function () {
 
       <div class="sheet__foot">
         <div class="sheet__sign">
-          <p class="sheet__sig">S. Jariwala</p>
-          <p class="sheet__cap">Director, for and on behalf of the declarant</p>
+          <p class="sheet__sig">Jewel Labs</p>
+          <p class="sheet__cap">Assembled and signed for the declarant</p>
         </div>
         <div class="seal" aria-hidden="true"><span>EU</span></div>
       </div>
@@ -307,13 +309,12 @@ setTimeout(function () {
     <h2 class="h2">See it read a parcel.</h2>
     <p class="lede">Bring goods you already know the answer on.</p>
 
-    <div class="cal" id="cal"
-         data-src="https://cal.com/soham-jariwala-4fvbkw/15min?embed=true&amp;theme=dark">
-      <div class="cal__gate" id="calGate">
-        <p class="cal__k">Booking calendar</p>
-        <p class="cal__b">Opens here on this page. It is hosted by Cal.com, so nothing is requested from them until you open it.</p>
-        <button class="btn btn--solid" type="button" id="calOpen">Open the calendar</button>
-      </div>
+    <div class="cal">
+      <iframe
+        title="Book a fifteen minute demo with Jewel Labs"
+        src="https://cal.com/soham-jariwala-4fvbkw/15min?embed=true&amp;theme=dark"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
     <p class="cal__alt">
       <a href="https://cal.com/soham-jariwala-4fvbkw/15min" target="_blank" rel="noopener noreferrer">Or open the booking page in a new tab</a>

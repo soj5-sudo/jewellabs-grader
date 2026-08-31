@@ -113,7 +113,7 @@ button, input { font: inherit; }
   border-bottom-color: var(--line);
 }
 .brand {
-  display: flex; align-items: center; gap: 9px;
+  display: flex; align-items: center; gap: 10px;
   font-size: 12px; font-weight: 500; letter-spacing: 0.17em; color: var(--text);
 }
 .brand svg { color: var(--ice); flex-shrink: 0; }
@@ -263,6 +263,7 @@ body.ready #cta { opacity: 1; }
 
 /* ═════════ CAL ═════════ */
 .cal {
+  display: block;
   margin-top: 38px;
   border: 1px solid var(--line); border-radius: var(--r-card);
   background: var(--panel); overflow: hidden;
@@ -321,13 +322,12 @@ body.ready #cta { opacity: 1; }
 @media (max-width: 860px) {
   .band { grid-template-columns: 1fr; gap: 10px; }
   .num { padding-top: 0; }
-  .grid8 { grid-template-columns: repeat(2, 1fr); }
   .steps li { grid-template-columns: 36px 1fr; row-gap: 6px; }
   .steps__b { grid-column: 2; }
 }
 @media (max-width: 620px) {
   .band { padding-left: 20px; padding-right: 20px; }
-    .doc__head, .doc__grid > div, .doc__list,   .compare { grid-template-columns: 1fr; }
+  .compare { grid-template-columns: 1fr; }
   .h2 { max-width: none; }
   .cal iframe { height: 640px; }
 }
@@ -341,20 +341,11 @@ body.ready #cta { opacity: 1; }
   }
   .wordmark, .tagline span, #cta, .rv, .readout b { opacity: 1 !important; transform: none !important; }
   #veil, #stage { display: none !important; }
+  .hero__stone { visibility: visible !important; }
 }
 
 /* ═════════ BOOKING GATE ═════════ */
-.cal { display: flex; min-height: 300px; }
 .cal iframe { width: 100%; height: 720px; border: 0; display: block; }
-.cal__gate { margin: auto; max-width: 420px; padding: 56px 28px; text-align: center; }
-.cal__k {
-  font-size: var(--t-micro); font-weight: 500; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--text-3); margin-bottom: 16px;
-}
-.cal__b { font-size: var(--t-body); line-height: 1.6; color: var(--text-2); margin-bottom: 26px; }
-.cal__alt { margin-top: 16px; font-size: var(--t-sm); }
-.cal__alt a { color: var(--text-3); text-decoration: underline; text-underline-offset: 4px; }
-.cal__alt a:hover { color: var(--text); }
 
 /* ═════════ DOCUMENTS ═════════
    Printed on paper, laid on the page. A real report is a sheet with rules and
@@ -444,6 +435,10 @@ body.ready #cta { opacity: 1; }
   margin-bottom: clamp(2px, 1.4vh, 18px);
 }
 .hero__stone canvas { width: 100%; height: 100%; }
+/* hidden until the intro hands over, so the two canvases never double expose */
+.js .hero__stone { visibility: hidden; }
+.js body.stone-home .hero__stone,
+body.stone-home .hero__stone { visibility: visible; }
 
 .kicker {
   font-size: var(--t-micro); font-weight: 500; letter-spacing: 0.2em;
@@ -459,3 +454,7 @@ body.ready #cta { opacity: 1; }
   .sheet__sig { min-width: 0; }
   .rows dd { white-space: normal; }
 }
+
+.cal__alt { margin-top: 16px; font-size: var(--t-sm); }
+.cal__alt a { color: var(--text-3); text-decoration: underline; text-underline-offset: 4px; }
+.cal__alt a:hover { color: var(--text); }

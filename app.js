@@ -89,24 +89,45 @@
     ];
   }
 
+  function len3(a, b) {
+    var dx = a[0] - b[0], dy = a[1] - b[1], dz = a[2] - b[2];
+    return Math.sqrt(dx * dx + dy * dy + dz * dz);
+  }
+
   /* Edge points carry the facet lines and are bright; surface points fill the
-     body and are dim. Returns [x, y, z, weight]. */
+     body and are dim. Points are spread in PROPORTION TO EDGE LENGTH, otherwise
+     the sixteen short girdle edges hoard particles and the long pavilion edges
+     go thin, which is what made the girdle and the tip disappear.
+     Returns [x, y, z, weight]. */
   function seed(n) {
     var E = STONE.edges, F = STONE.faces;
-    var nEdge = Math.round(n * 0.34), nFace = n - nEdge;
-    var pts = [], i;
+    var nEdge = Math.round(n * 0.46), nFace = n - nEdge;
+    var pts = [], i, j;
 
-    var per = Math.max(1, Math.ceil(nEdge / E.length));
-    for (i = 0; i < nEdge; i++) {
-      var g = E[i % E.length];
-      var t = (Math.floor(i / E.length) + 0.5) / per;
-      pts.push([
-        g[0][0] + (g[1][0] - g[0][0]) * t,
-        g[0][1] + (g[1][1] - g[0][1]) * t,
-        g[0][2] + (g[1][2] - g[0][2]) * t,
-        1
-      ]);
+    var lens = [], total = 0;
+    for (i = 0; i < E.length; i++) { lens[i] = len3(E[i][0], E[i][1]); total += lens[i]; }
+
+    for (i = 0; i < E.length; i++) {
+      var count = Math.max(3, Math.round(nEdge * lens[i] / total));
+      for (j = 0; j < count; j++) {
+        var t = (j + 0.5) / count;
+        pts.push([
+          E[i][0][0] + (E[i][1][0] - E[i][0][0]) * t,
+          E[i][0][1] + (E[i][1][1] - E[i][0][1]) * t,
+          E[i][0][2] + (E[i][1][2] - E[i][0][2]) * t,
+          1
+        ]);
+      }
     }
+
+    // the culet is one point where sixteen edges meet: pack it so the tip is a
+    // sharp point rather than a frayed end
+    for (i = 0; i < 26; i++) {
+      var r = Math.pow(Math.random(), 2) * 0.02;
+      var a = Math.random() * Math.PI * 2;
+      pts.push([Math.cos(a) * r, 1.00 - Math.random() * 0.012, Math.sin(a) * r, 1]);
+    }
+
     for (i = 0; i < nFace; i++) {
       var q = inTri(F[i % F.length]);
       pts.push([q[0], q[1], q[2], 0.60]);
@@ -283,7 +304,11 @@
       if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
       if (veil && veil.parentNode) { veil.parentNode.removeChild(veil); veil = null; }
     }
-    function handOver() { body.classList.add('ready'); }
+    // every exit from the intro, normal or not, must leave the stone visible
+    function handOver() {
+      body.classList.add('ready');
+      body.classList.add('stone-home');
+    }
 
     var ctx = null;
     if (canvas) { try { ctx = canvas.getContext('2d'); } catch (e) {} }
@@ -335,7 +360,7 @@
 
     var FORM = 2100;   // gather
     var HOLD = 3550;   // turn
-    var GONE = 4750;   // dissolve
+    var GONE = 5250;   // settle onto the hero
     var t0 = performance.now();
     var handed = false;
     var skipAt = t0 + 700;
@@ -379,7 +404,6 @@
 
       if (veil) veil.style.opacity = clamp(1 - out * 1.6, 0, 1).toFixed(3);
       if (!handed && out > 0.06) { handed = true; handOver(); runWords(520); }
-      canvas.style.opacity = clamp(1 - (out - 0.86) / 0.14, 0, 1).toFixed(3);
 
       for (var i = 0; i < N; i++) {
         var p = parts[i];
@@ -408,7 +432,7 @@
       ctx.globalAlpha = 1;
       ctx.globalCompositeOperation = 'source-over';
 
-      if (el > GONE + 100) { finish(); return; }
+      if (out >= 1) { finish(); return; }
       raf = requestAnimationFrame(frame);
     });
   });
@@ -514,10 +538,15 @@
       var rx = 0.34 + Math.sin(el * 0.0003) * 0.05;
 
       // one measurement pass, then it is done. Nothing loops, nothing resets.
-      var PASS = 2600, LEAD = 500;
-      var k = clamp((el - LEAD) / PASS, 0, 1);
-      var passing = k > 0 && k < 1;
+      // the pass repeats so the chamber always reads as scanning, but the
+      // values below only ever settle in, they never reset
+      var PASS = 3400, GAP = 1100, LEAD = 400;
+      var cyc = PASS + GAP;
+      var since = Math.max(0, el - LEAD);
+      var k = clamp((since % cyc) / PASS, 0, 1);
+      var passing = (since % cyc) < PASS;
       var sweepY = cy - scale * 1.4 + easeInOut(k) * scale * 2.8;
+      var settled = clamp(since / PASS, 0, 1);
 
       for (var i = 0; i < pts.length; i++) {
         var q = project(pts[i], ry, rx, scale, cx, cy);
@@ -543,7 +572,7 @@
       }
 
       // each value settles as the pass clears it, and then stays settled
-      var filled = Math.floor(clamp(k / 0.88, 0, 1) * cells.length);
+      var filled = Math.floor(clamp(settled / 0.88, 0, 1) * cells.length);
       for (var j = 0; j < filled; j++) cells[j].classList.add('set');
     }
 
@@ -584,28 +613,6 @@
     } else { start(); }
   });
 
-  /* ══════════════ BOOKING, OPENED ON REQUEST ══════════════ */
-  layer(function () {
-    var wrap = qs('#cal'), gate = qs('#calGate'), btn = qs('#calOpen');
-    if (!wrap || !gate || !btn) return;
-
-    btn.addEventListener('click', function () {
-      var src = wrap.getAttribute('data-src');
-      if (!src) return;
-      btn.disabled = true;
-      btn.textContent = 'Opening…';
-      var f = document.createElement('iframe');
-      f.title = 'Book a fifteen minute demo with Jewel Labs';
-      f.src = src;
-      f.referrerPolicy = 'no-referrer-when-downgrade';
-      f.addEventListener('load', function () {
-        if (gate.parentNode) gate.parentNode.removeChild(gate);
-        try { f.focus(); } catch (e) {}
-      });
-      wrap.appendChild(f);
-    });
-  });
-
   /* ══════════════ NAV ══════════════ */
   layer(function () {
     var nav = qs('#nav');
@@ -636,10 +643,10 @@
     }, { rootMargin: '0px 0px -5% 0px', threshold: 0.04 });
     items.forEach(function (el) { io.observe(el); });
 
-    setTimeout(function () {
-      io.disconnect();
-      items.forEach(function (el) { el.classList.add('in'); });
-    }, 3400);
+    // No blanket timer here on purpose. It fired whenever the visitor had not
+    // scrolled yet and opened the whole page at once. This is fail-open by
+    // construction instead: .rv is only ever added by this script, so if the
+    // script does not run, nothing is hidden in the first place.
   });
 
   /* ══════════════ WAITLIST ══════════════ */
