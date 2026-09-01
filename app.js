@@ -719,7 +719,7 @@
           });
           step = Math.min(sibs.indexOf(el), 4);
         }
-        el.style.transitionDelay = (step > 0 ? step * 115 : 0) + 'ms';
+        el.style.transitionDelay = (step > 0 ? step * 70 : 0) + 'ms';
         el.classList.add('in');
         io.unobserve(el);
       });

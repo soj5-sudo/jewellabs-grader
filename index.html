@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#000000" />
-<link rel="icon" href="favicon.svg?v=10" type="image/svg+xml" sizes="any" />
-<link rel="apple-touch-icon" href="favicon.svg?v=10" />
+<link rel="icon" href="favicon.svg?v=12" type="image/svg+xml" sizes="any" />
+<link rel="apple-touch-icon" href="favicon.svg?v=12" />
 
 <title>Jewel Labs</title>
 <meta name="description" content="Hard tech for the diamond trade. The first ML automated desk diamond grader: a scanning machine that fits on a trading desk, grades a polished stone across every category that carries price, and writes the record the customs filing is built from." />
@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Inter:wght@300;400;450;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="style.css?v=10" />
+<link rel="stylesheet" href="style.css?v=12" />
 <script>document.documentElement.classList.add('js')</script>
 
 <script type="application/ld+json">
@@ -51,6 +51,7 @@
 <canvas id="ambient" aria-hidden="true"></canvas>
 <canvas id="stage" aria-hidden="true"></canvas>
 <div id="veil" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
 <script>
 /* The intro must clear itself even if the module never loads. */
 setTimeout(function () {
@@ -98,11 +99,10 @@ setTimeout(function () {
 
 <!-- ─────────── 01 WHAT WE MAKE ─────────── -->
 <section class="band" id="what">
-  <p class="num">01</p>
   <div class="band__body">
     <div class="band__head">
       <p class="kicker">What we make</p>
-      <h2 class="h2">Machines that grade diamonds, and file their paperwork.</h2>
+      <h2 class="h2">Machines that grade diamonds.<br /><em>And file their paperwork.</em></h2>
     </div>
     <div class="band__lead">
       <p class="lede">
@@ -123,13 +123,15 @@ setTimeout(function () {
       </figcaption>
     </figure>
 
-    <p class="sub">Software runs today. The machine is in development.</p>
+    <dl class="state">
+      <div><dt>Software</dt><dd>Running today</dd></div>
+      <div><dt>Machine</dt><dd>In development</dd></div>
+    </dl>
   </div>
 </section>
 
 <!-- ─────────── 02 THE MACHINE ─────────── -->
 <section class="band band--wide" id="scan">
-  <p class="num">02</p>
   <div class="band__body">
     <div class="band__head">
       <h2 class="h2">One stone, read.</h2>
@@ -222,11 +224,10 @@ setTimeout(function () {
 
 <!-- ─────────── 03 THE CHAIN ─────────── -->
 <section class="band band--wide" id="how">
-  <p class="num">03</p>
   <div class="band__body">
     <div class="band__head">
       <p class="kicker">Rough to border</p>
-      <h2 class="h2">One chain, four steps.</h2>
+      <h2 class="h2">One chain.<br /><em>Four steps.</em></h2>
     </div>
     <div class="band__lead">
       <p class="lede">
@@ -236,44 +237,25 @@ setTimeout(function () {
 
     <ol class="flow">
       <li class="flow__step">
-        <span class="flow__glyph" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round">
-            <polygon points="12,3 20,9.5 16.5,20 7.5,20 4,9.5"/>
-            <path d="M4 9.5h16M12 3l-4.5 17M12 3l4.5 17"/>
-          </svg>
-        </span>
+        <span class="flow__dot" aria-hidden="true"></span>
         <span class="flow__n">01</span>
         <span class="flow__t">Cut plan</span>
         <span class="flow__b">A rough scan goes to the model. It sends back where to cut.</span>
       </li>
       <li class="flow__step">
-        <span class="flow__glyph" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round">
-            <rect x="3" y="6" width="18" height="13" rx="1"/>
-            <polygon points="12,10 15,13 12,16 9,13"/>
-            <path d="M8 6V4h8v2"/>
-          </svg>
-        </span>
+        <span class="flow__dot" aria-hidden="true"></span>
         <span class="flow__n">02</span>
         <span class="flow__t">Read</span>
         <span class="flow__b">The stone goes in the box and is graded in seconds.</span>
       </li>
       <li class="flow__step">
-        <span class="flow__glyph" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
-            <path d="M4 7h16M4 12h16M4 17h9"/>
-          </svg>
-        </span>
+        <span class="flow__dot" aria-hidden="true"></span>
         <span class="flow__n">03</span>
         <span class="flow__t">Record</span>
         <span class="flow__b">One row per stone, permanent, readable by every other system.</span>
       </li>
       <li class="flow__step">
-        <span class="flow__glyph" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round">
-            <path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 14l2.2 2.2L16 11.5"/>
-          </svg>
-        </span>
+        <span class="flow__dot" aria-hidden="true"></span>
         <span class="flow__n">04</span>
         <span class="flow__t">File</span>
         <span class="flow__b">Checked against the certificate and invoice, then filed for the EU.</span>
@@ -286,7 +268,6 @@ setTimeout(function () {
 
 <!-- ─────────── 04 THE FILING ─────────── -->
 <section class="band" id="paperwork">
-  <p class="num">04</p>
   <div class="band__body">
     <div class="band__head">
       <h2 class="h2">The filing.</h2>
@@ -367,11 +348,10 @@ setTimeout(function () {
 
 <!-- ─────────── 05 THE DATASET ─────────── -->
 <section class="band band--wide" id="dataset">
-  <p class="num">05</p>
   <div class="band__body">
     <div class="band__head">
       <p class="kicker">What the records are worth</p>
-      <h2 class="h2">The record is the dataset.</h2>
+      <h2 class="h2">The record.<br /><em>Is the dataset.</em></h2>
     </div>
     <div class="band__lead">
       <p class="lede">
@@ -389,12 +369,17 @@ setTimeout(function () {
         CC&nbsp;BY-SA&nbsp;4.0.
       </figcaption>
     </figure>
+
+    <a class="onward" href="https://jewellabs.io/" target="_blank" rel="noopener noreferrer">
+      <span class="onward__k">Jewel Labs</span>
+      <span class="onward__t">What else diamond is for</span>
+      <span class="onward__a" aria-hidden="true"></span>
+    </a>
   </div>
 </section>
 
 <!-- ─────────── 06 CONTACT ─────────── -->
 <section class="band band--wide band--end" id="contact">
-  <p class="num">06</p>
   <div class="band__body">
     <div class="band__head">
       <h2 class="h2">See it read a parcel.</h2>
@@ -429,7 +414,14 @@ setTimeout(function () {
 
 <footer class="foot">
   <div class="foot__row">
-    <span class="foot__brand">Jewel Labs</span>
+    <a class="foot__brand" href="https://jewellabs.io/" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round">
+        <polygon points="12,2.5 21.5,12 12,21.5 2.5,12"/><polygon points="12,7.5 16.5,12 12,16.5 7.5,12"/>
+        <line x1="12" y1="2.5" x2="12" y2="7.5"/><line x1="12" y1="21.5" x2="12" y2="16.5"/>
+        <line x1="2.5" y1="12" x2="7.5" y2="12"/><line x1="21.5" y1="12" x2="16.5" y2="12"/>
+      </svg>
+      <span>Jewel&nbsp;Labs</span>
+    </a>
     <nav class="foot__nav" aria-label="Footer">
       <a href="mailto:soj5@cornell.edu">soj5@cornell.edu</a>
       <a href="https://www.linkedin.com/in/soham-jariwala-18297520a" target="_blank" rel="noopener noreferrer">LinkedIn</a>
@@ -440,6 +432,6 @@ setTimeout(function () {
   </div>
 </footer>
 
-<script src="app.js?v=10" defer></script>
+<script src="app.js?v=12" defer></script>
 </body>
 </html>
