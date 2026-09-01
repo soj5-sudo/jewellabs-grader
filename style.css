@@ -715,3 +715,7 @@ body.stone-home .hero__stone { visibility: visible; }
   text-transform: uppercase; color: var(--text-3);
 }
 .state dd { margin: 0; font-size: var(--t-sm); color: var(--text); }
+
+/* the parent site, last in the row so it is the rightmost thing on the page */
+.foot__home { color: var(--text); }
+.foot__home:hover { color: #fff; }
