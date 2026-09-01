@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#000000" />
-<link rel="icon" href="favicon.svg?v=26" type="image/svg+xml" sizes="any" />
-<link rel="apple-touch-icon" href="favicon.svg?v=26" />
+<link rel="icon" href="favicon.svg?v=29" type="image/svg+xml" sizes="any" />
+<link rel="apple-touch-icon" href="favicon.svg?v=29" />
 
 <title>Jewel Labs</title>
 <meta name="description" content="Jewel Labs builds automated diamond graders and the machine learning models that run them. A polished stone is read on the desk in seconds, and the EU customs filing is built from the record the machine writes." />
@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Inter:wght@300;400;450;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="style.css?v=26" />
+<link rel="stylesheet" href="style.css?v=29" />
 <script>document.documentElement.classList.add('js')</script>
 
 <script type="application/ld+json">
@@ -98,48 +98,45 @@ setTimeout(function () {
 </section>
 
 <!-- ─────────── 01 WHAT WE MAKE ─────────── -->
-<section class="band" id="what">
-  <div class="band__body">
-    <div class="band__head">
+<section class="band band--wide" id="what">
+  <div class="band__body band__body--split">
+    <figure class="rig">
+      <img src="img/scope.jpg" width="400" height="530" loading="lazy" decoding="async"
+           alt="The bench microscope: a diamond on its lit stage, magnified on the screen above." />
+      <figcaption>The bench rig, reading one stone</figcaption>
+    </figure>
+
+    <div class="lead">
       <p class="kicker">The first of its kind</p>
       <h2 class="h2">ML Automated Diamond Grading &amp; Assorting Engine</h2>
-    </div>
-    <div class="band__lead">
       <p class="lede">
-      A stone goes in the box. Cameras and a spectrometer read it, a model grades it, and the machine
-      writes a record. The EU filing is built from that record.
+        A stone goes in the box. Cameras and a spectrometer read it, a model grades it, and the
+        machine writes a record. The EU filing is built from that record.
       </p>
       <p class="lede">
-      Today it is graded by eye, so the same stone gets different grades from different people.
+        Today it is graded by eye, so the same stone gets different grades from different people.
       </p>
+      <dl class="state">
+        <div><dt>Software</dt><dd>Running today</dd></div>
+        <div><dt>Machine</dt><dd>In development</dd></div>
+      </dl>
     </div>
-    <div class="media">
-      <figure class="media__cell media__cell--rig">
-        <img src="img/scope.jpg" width="570" height="760" loading="lazy" decoding="async"
-             alt="The bench microscope, a diamond on its lit stage and the magnified stone on the screen above it." />
-        <figcaption>The bench rig, reading one stone</figcaption>
-      </figure>
-      <figure class="media__cell">
-        <video class="figure__v" width="1400" height="552" poster="img/stone_poster.jpg"
-               autoplay muted loop playsinline preload="metadata"
-               aria-label="A light passing slowly across a natural diamond crystal about one millimetre across, with an inclusion visible inside it.">
-          <source src="img/stone.webm" type="video/webm" />
-          <source src="img/stone.mp4" type="video/mp4" />
-        </video>
-        <figcaption>A natural crystal, a millimetre across. The speck inside it is an inclusion.</figcaption>
-      </figure>
-    </div>
-
-    <dl class="state">
-      <div><dt>Software</dt><dd>Running today</dd></div>
-      <div><dt>Machine</dt><dd>In development</dd></div>
-    </dl>
   </div>
 </section>
 
 <!-- ─────────── 02 THE MACHINE ─────────── -->
 <section class="band band--wide" id="scan">
   <div class="band__body">
+    <figure class="figure figure--wide">
+      <video class="figure__v" width="1400" height="552" poster="img/stone_poster.jpg"
+             autoplay muted loop playsinline preload="metadata"
+             aria-label="A light passing slowly across a natural diamond crystal about one millimetre across, with an inclusion visible inside it.">
+        <source src="img/stone.webm" type="video/webm" />
+        <source src="img/stone.mp4" type="video/mp4" />
+      </video>
+      <figcaption>A natural crystal, a millimetre across. The speck inside it is an inclusion.</figcaption>
+    </figure>
+
     <div class="band__head">
       <h2 class="h2">One stone, read.</h2>
     </div>
@@ -438,6 +435,6 @@ setTimeout(function () {
   </div>
 </footer>
 
-<script src="app.js?v=26" defer></script>
+<script src="app.js?v=29" defer></script>
 </body>
 </html>
