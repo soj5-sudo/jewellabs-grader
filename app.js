@@ -700,7 +700,7 @@
   layer(function () {
     if (reduced || !('IntersectionObserver' in window)) return;
     var items = Array.prototype.slice.call(
-      document.querySelectorAll('.band__head, .band__lead, .band .sub, .flow, .sheet, .bay, .figure, .spec, .cal, .wl')
+      document.querySelectorAll('.band__head, .band__lead, .band .sub, .sheet, .bay, .figure, .media, .onward, .spec, .cal, .wl')
     );
     if (!items.length) return;
     items.forEach(function (el) { el.classList.add('rv'); });
@@ -757,6 +757,71 @@
     // scrolled yet and opened the whole page at once. This is fail-open by
     // construction instead: .rv is only ever added by this script, so if the
     // script does not run, nothing is hidden in the first place.
+  });
+
+  /* ══════════════ PINNED FLOW ══════════════
+     The section stays put while four steps arrive, one per scroll, left to
+     right. One number drives all of it: how far you are through the pin. */
+  layer(function () {
+    if (reduced) return;
+    var pin = qs('.pin');
+    var flow = qs('.flow');
+    if (!pin || !flow || !window.matchMedia) return;
+    var wide = window.matchMedia('(min-width: 861px)');
+    var steps = Array.prototype.slice.call(flow.querySelectorAll('.flow__step'));
+    if (!steps.length) return;
+
+    var on = false, raf = 0;
+
+    function clear() {
+      flow.classList.remove('flow--scroll');
+      flow.style.removeProperty('--p');
+      steps.forEach(function (s) { s.classList.remove('on'); });
+    }
+
+    function frame() {
+      raf = 0;
+      var box = pin.getBoundingClientRect();
+      var span = pin.offsetHeight - window.innerHeight;
+      if (span <= 0) return;
+      var p = clamp(-box.top / span, 0, 1);
+
+      // the rail is the scroll position, drawn
+      flow.style.setProperty('--p', p.toFixed(4));
+
+      // each step lands a quarter of the way through, with a little lead-in so
+      // the first one is already there when the section settles
+      // the last step lands at 0.78, so the pin does not sit there doing
+      // nothing while you scroll out of it
+      for (var i = 0; i < steps.length; i++) {
+        var at = (i / steps.length) * 0.78;
+        steps[i].classList.toggle('on', p >= at - 0.02);
+      }
+    }
+
+    function onScroll() { if (!raf) raf = requestAnimationFrame(frame); }
+
+    function sync() {
+      if (wide.matches) {
+        if (!on) {
+          on = true;
+          flow.classList.add('flow--scroll');
+          window.addEventListener('scroll', onScroll, { passive: true });
+        }
+        frame();
+      } else if (on) {
+        on = false;
+        window.removeEventListener('scroll', onScroll);
+        clear();
+      }
+    }
+
+    sync();
+    window.addEventListener('resize', function () {
+      clearTimeout(sync._t);
+      sync._t = setTimeout(sync, 160);
+    });
+    if (wide.addEventListener) wide.addEventListener('change', sync);
   });
 
   /* ══════════════ WAITLIST ══════════════ */

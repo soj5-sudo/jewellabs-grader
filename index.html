@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#000000" />
-<link rel="icon" href="favicon.svg?v=19" type="image/svg+xml" sizes="any" />
-<link rel="apple-touch-icon" href="favicon.svg?v=19" />
+<link rel="icon" href="favicon.svg?v=25" type="image/svg+xml" sizes="any" />
+<link rel="apple-touch-icon" href="favicon.svg?v=25" />
 
 <title>Jewel Labs</title>
 <meta name="description" content="Jewel Labs builds automated diamond graders and the machine learning models that run them. A polished stone is read on the desk in seconds, and the EU customs filing is built from the record the machine writes." />
@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Inter:wght@300;400;450;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="style.css?v=19" />
+<link rel="stylesheet" href="style.css?v=25" />
 <script>document.documentElement.classList.add('js')</script>
 
 <script type="application/ld+json">
@@ -110,21 +110,25 @@ setTimeout(function () {
       writes a record. The EU filing is built from that record.
       </p>
       <p class="lede">
-      Today it is graded by eye. The same stone gets different grades from different people.
+      Today it is graded by eye, so the same stone gets different grades from different people.
       </p>
     </div>
-    <figure class="figure figure--wide">
-      <video class="figure__v" width="1400" height="552" poster="img/stone_poster.jpg"
-             autoplay muted loop playsinline preload="metadata"
-             aria-label="A light passing slowly across a natural diamond crystal about one millimetre across, with an inclusion visible inside it.">
-        <source src="img/stone.webm" type="video/webm" />
-        <source src="img/stone.mp4" type="video/mp4" />
-      </video>
-      <figcaption>
-        A natural crystal a millimetre across. The speck inside it is an inclusion, one of the things
-        the machine reads. Graded from a photograph by Giulio Franzinetti, CC&nbsp;BY-SA&nbsp;4.0.
-      </figcaption>
-    </figure>
+    <div class="media">
+      <figure class="media__cell media__cell--rig">
+        <img src="img/scope.jpg" width="470" height="700" loading="lazy" decoding="async"
+             alt="The bench microscope, a diamond on its lit stage and the magnified stone on the screen above it." />
+        <figcaption>The bench rig, reading one stone</figcaption>
+      </figure>
+      <figure class="media__cell">
+        <video class="figure__v" width="1400" height="552" poster="img/stone_poster.jpg"
+               autoplay muted loop playsinline preload="metadata"
+               aria-label="A light passing slowly across a natural diamond crystal about one millimetre across, with an inclusion visible inside it.">
+          <source src="img/stone.webm" type="video/webm" />
+          <source src="img/stone.mp4" type="video/mp4" />
+        </video>
+        <figcaption>A natural crystal, a millimetre across. The speck inside it is an inclusion.</figcaption>
+      </figure>
+    </div>
 
     <dl class="state">
       <div><dt>Software</dt><dd>Running today</dd></div>
@@ -140,7 +144,7 @@ setTimeout(function () {
       <h2 class="h2">One stone, read.</h2>
     </div>
     <div class="band__lead">
-      <p class="lede">The chamber holds the stone still under known light.</p>
+      <p class="lede">Sealed chamber, known light, the same answer every time.</p>
     </div>
 
     <div class="bay">
@@ -226,46 +230,45 @@ setTimeout(function () {
 </section>
 
 <!-- ─────────── 03 THE CHAIN ─────────── -->
-<section class="band band--wide" id="how">
+<section class="band band--wide band--pin" id="how">
   <div class="band__body">
-    <div class="band__head">
-      <p class="kicker">How it works</p>
-      <h2 class="h2">How a stone becomes a filing.</h2>
-    </div>
-    <div class="band__lead">
-      <p class="lede">
-        The cut plan, the grade and the filing are all built from one record.
-      </p>
-    </div>
+    <div class="pin">
+      <div class="pin__stage">
+        <div class="band__head">
+          <p class="kicker">How it works</p>
+          <h2 class="h2">How a stone becomes a filing.</h2>
+        </div>
 
-    <ol class="flow">
-      <li class="flow__step">
-        <span class="flow__dot" aria-hidden="true"></span>
-        <span class="flow__n">01</span>
-        <span class="flow__t">Cut plan</span>
-        <span class="flow__b">A rough scan goes to the model. It sends back where to cut.</span>
-      </li>
-      <li class="flow__step">
-        <span class="flow__dot" aria-hidden="true"></span>
-        <span class="flow__n">02</span>
-        <span class="flow__t">Read</span>
-        <span class="flow__b">The stone goes in the box and is graded in seconds.</span>
-      </li>
-      <li class="flow__step">
-        <span class="flow__dot" aria-hidden="true"></span>
-        <span class="flow__n">03</span>
-        <span class="flow__t">Record</span>
-        <span class="flow__b">One row per stone, permanent, readable by every other system.</span>
-      </li>
-      <li class="flow__step">
-        <span class="flow__dot" aria-hidden="true"></span>
-        <span class="flow__n">04</span>
-        <span class="flow__t">File</span>
-        <span class="flow__b">Checked against the certificate and invoice, then filed.</span>
-      </li>
-    </ol>
+        <ol class="flow">
+          <li class="flow__step">
+            <span class="flow__dot" aria-hidden="true"></span>
+            <span class="flow__n">01</span>
+            <span class="flow__t">Cut plan</span>
+            <span class="flow__b">A rough scan goes to the model. It sends back where to cut.</span>
+          </li>
+          <li class="flow__step">
+            <span class="flow__dot" aria-hidden="true"></span>
+            <span class="flow__n">02</span>
+            <span class="flow__t">Read</span>
+            <span class="flow__b">The stone goes in the box and is graded in seconds.</span>
+          </li>
+          <li class="flow__step">
+            <span class="flow__dot" aria-hidden="true"></span>
+            <span class="flow__n">03</span>
+            <span class="flow__t">Record</span>
+            <span class="flow__b">One row per stone, readable by any other system.</span>
+          </li>
+          <li class="flow__step">
+            <span class="flow__dot" aria-hidden="true"></span>
+            <span class="flow__n">04</span>
+            <span class="flow__t">File</span>
+            <span class="flow__b">Checked against the certificate and invoice, then filed.</span>
+          </li>
+        </ol>
 
-    <p class="sub">Machines share one record, so a stone read in Mumbai is filed from Antwerp.</p>
+        <p class="sub">One record, shared by every machine.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -277,8 +280,8 @@ setTimeout(function () {
     </div>
     <div class="band__lead">
       <p class="lede">
-      Since 1 January 2026, polished goods at or above 0.50&nbsp;ct need a signed origin statement to
-      enter the EU. It is built from the records while the parcel is still on the desk.
+      Polished goods at or above 0.50&nbsp;ct need a signed origin statement to enter the EU. We build
+      it from the records, while the parcel is still on the desk.
       </p>
     </div>
 
@@ -435,6 +438,6 @@ setTimeout(function () {
   </div>
 </footer>
 
-<script src="app.js?v=19" defer></script>
+<script src="app.js?v=25" defer></script>
 </body>
 </html>
