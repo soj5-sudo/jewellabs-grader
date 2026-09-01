@@ -735,9 +735,22 @@
         es.forEach(function (e) {
           var img = e.target.querySelector('img');
           if (img) img.style.animationPlayState = e.isIntersecting ? 'running' : 'paused';
+          // a clip off screen is decoded frames nobody is watching
+          var vid = e.target.querySelector('video');
+          if (vid && !reduced) {
+            if (e.isIntersecting) { var pr = vid.play(); if (pr && pr.catch) pr.catch(function () {}); }
+            else vid.pause();
+          }
         });
       }, { rootMargin: '10% 0px' });
       figs.forEach(function (f) { vis.observe(f); });
+    }
+
+    // reduced motion keeps the poster frame and never starts the clip
+    if (reduced) {
+      Array.prototype.forEach.call(document.querySelectorAll('video'), function (v) {
+        v.removeAttribute('autoplay'); v.removeAttribute('loop'); v.pause();
+      });
     }
 
     // No blanket timer here on purpose. It fired whenever the visitor had not
