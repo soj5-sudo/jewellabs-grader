@@ -478,7 +478,10 @@ body.stone-home .hero__stone { visibility: visible; }
 .figure img, .figure__v {
   display: block;
   width: 100%;
-  height: clamp(190px, 26vh, 280px);
+  /* pin the band's shape so it never crops toward square on a narrow screen */
+  height: auto;
+  aspect-ratio: 12 / 5;
+  max-height: 300px;
   object-fit: cover;
   object-position: center;
   filter: contrast(1.10) brightness(0.66) saturate(0.80);
