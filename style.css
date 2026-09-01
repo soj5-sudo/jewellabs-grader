@@ -790,7 +790,7 @@ body.stone-home .hero__stone { visibility: visible; }
    in a single frame, rather than two pictures floating separately on black. */
 .media {
   display: grid;
-  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 315px) minmax(0, 1fr);
   gap: 1px;
   margin-top: 40px;
   background: var(--line);
@@ -803,16 +803,16 @@ body.stone-home .hero__stone { visibility: visible; }
 .media__cell > video {
   display: block;
   width: 100%;
-  height: 330px;
+  height: 420px;
   object-fit: cover;
   object-position: center;
   background: var(--bg);
   animation: none;
   transform: none;
 }
-/* the rig is portrait and the whole machine has to be in frame, so it is
-   contained rather than cropped. Its letterbox is black on black. */
-.media__cell--rig > img { object-fit: contain; }
+/* the rig is cropped to 3:4 around the whole machine, so it fills its cell
+   with nothing left over. */
+.media__cell--rig > img { object-position: center; }
 .media__cell figcaption {
   margin-top: auto;
   padding: 13px 16px;
@@ -821,7 +821,8 @@ body.stone-home .hero__stone { visibility: visible; }
 }
 @media (max-width: 860px) {
   .media { grid-template-columns: 1fr; }
-  .media__cell > img, .media__cell > video { height: 230px; }
+  .media__cell > img, .media__cell > video { height: 260px; }
+  .media__cell--rig > img { height: 300px; }
 }
 
 /* the last thing before the calendar arrives on its own, slowly */
