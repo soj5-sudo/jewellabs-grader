@@ -504,8 +504,17 @@ body.stone-home .hero__stone { visibility: visible; }
   100% { transform: scale(1.07) translate3d(-1.4%, 0, 0); }
 }
 .figure.in img { animation: drift 30s ease-in-out infinite; }
-/* the clip carries its own move, so it must not also drift */
+/* the clip carries its own move, so it must not also drift.
+   contain, not cover: the clip is 12/5 only at one width, and cover was
+   slicing the top and bottom off the stone. Its own black ground is
+   indistinguishable from the page, so letterboxing costs nothing. */
 .figure__v, .figure.in .figure__v { animation: none; transform: none; }
+.figure__v {
+  object-fit: contain;
+  background: var(--bg);
+  aspect-ratio: 2 / 1;
+  max-height: 380px;
+}
 @media (prefers-reduced-motion: reduce) {
   .figure img, .figure.in img, .figure__v { transform: none; animation: none; }
 }
