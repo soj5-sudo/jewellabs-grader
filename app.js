@@ -291,14 +291,59 @@
     var veil = qs('#veil');
     var body = document.body;
 
-    var words = Array.prototype.slice.call(document.querySelectorAll('#tagline span'));
-    var wordsRun = false;
+    /* The line types itself in, one character at a time.
+
+       Every character is placed in the DOM up front and merely REVEALED in
+       turn, rather than appended as it is typed. That is what keeps the line
+       in its final box the whole way: it wraps where it is going to wrap from
+       the first frame, so a centred sentence never grows into a second line
+       halfway through and shoves the buttons down the page.
+
+       The characters are plain inline spans, never inline-block, or the line
+       would gain a break opportunity between every letter and words would
+       come apart at the end of a line. */
+    var tagline = qs('#tagline');
+    var typed = false;
     function runWords(delay) {
-      if (wordsRun) return;
-      wordsRun = true;
-      words.forEach(function (w, i) {
-        setTimeout(function () { w.classList.add('in'); }, delay + i * 130);
-      });
+      if (typed) return;
+      typed = true;
+      if (!tagline) return;
+
+      var full = (tagline.textContent || '').trim();
+      if (!full) return;
+      if (reduced) { tagline.textContent = full; return; }
+
+      tagline.textContent = '';
+      var cells = [];
+      for (var i = 0; i < full.length; i++) {
+        var cell = document.createElement('span');
+        cell.className = 'ty';
+        cell.textContent = full.charAt(i);
+        tagline.appendChild(cell);
+        cells.push(cell);
+      }
+
+      var n = 0;
+      function step() {
+        if (n > 0) cells[n - 1].classList.remove('cur');
+        if (n >= cells.length) {
+          var last = cells[cells.length - 1];
+          last.classList.add('cur');
+          setTimeout(function () { last.classList.remove('cur'); }, 1200);
+          return;
+        }
+        var cell = cells[n];
+        cell.className = 'ty on cur';
+        n++;
+        setTimeout(step, cell.textContent === ' ' ? 32 : 46 + Math.random() * 34);
+      }
+      setTimeout(step, delay);
+
+      // If the tab is backgrounded the timers throttle and the line can sit
+      // half written. Finish it rather than leave a sentence cut in half.
+      setTimeout(function () {
+        cells.forEach(function (c) { c.className = 'ty on'; });
+      }, delay + full.length * 90 + 4000);
     }
     function strip() {
       if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
@@ -629,7 +674,7 @@
   layer(function () {
     if (reduced || !('IntersectionObserver' in window)) return;
     var items = Array.prototype.slice.call(
-      document.querySelectorAll('.band .kicker, .band .h2, .band .lede, .band .sub, .steps, .sheet, .compare, .bay, .cal, .wl')
+      document.querySelectorAll('.band .kicker, .band .h2, .band .lede, .band .sub, .steps, .sheet, .compare, .bay, .figure, .cal, .wl')
     );
     if (!items.length) return;
     items.forEach(function (el) { el.classList.add('rv'); });

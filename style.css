@@ -160,16 +160,24 @@ body.ready .wordmark { opacity: 1; }
   letter-spacing: -0.015em;
   color: var(--text-2);
 }
-.tagline span { display: inline-block; }
-.js .tagline span {
-  clip-path: inset(0 101% 0 -3%);
-  -webkit-clip-path: inset(0 101% 0 -3%);
+/* One character per cell, all of them in place from the start and only
+   revealed in turn, so the line holds its final box while it types.
+   Inline, never inline-block: inline-block would let a line break between
+   any two letters and pull words apart. */
+.tagline .ty { visibility: hidden; position: relative; }
+.tagline .ty.on { visibility: visible; }
+.tagline .ty.cur::after {
+  content: '';
+  position: absolute; right: -0.32em; top: 0.08em;
+  width: 1px; height: 1.02em;
+  background: var(--ice);
+  animation: caret 1.05s steps(1) infinite;
 }
-.tagline span.in {
-  clip-path: inset(0 -3% 0 -3%);
-  -webkit-clip-path: inset(0 -3% 0 -3%);
-  transition: clip-path 230ms cubic-bezier(0.22, 0.61, 0.36, 1),
-              -webkit-clip-path 230ms cubic-bezier(0.22, 0.61, 0.36, 1);
+@keyframes caret { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .tagline .ty { visibility: visible; }
+  .tagline .ty.cur::after { display: none; }
 }
 
 .cta { display: flex; flex-wrap: wrap; gap: 11px; justify-content: center; margin-top: clamp(30px, 4.2vw, 48px); }
