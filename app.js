@@ -291,59 +291,85 @@
     var veil = qs('#veil');
     var body = document.body;
 
-    /* The line types itself in, one character at a time.
+    /* The line writes itself, erases itself, then writes what the company
+       actually says.
 
-       Every character is placed in the DOM up front and merely REVEALED in
-       turn, rather than appended as it is typed. That is what keeps the line
-       in its final box the whole way: it wraps where it is going to wrap from
-       the first frame, so a centred sentence never grows into a second line
-       halfway through and shoves the buttons down the page.
+         "Diamonds for the future civilization."   typed, held, erased
+         "Hard tech for the diamond trade."        typed, and it stays
 
-       The characters are plain inline spans, never inline-block, or the line
-       would gain a break opportunity between every letter and words would
-       come apart at the end of a line. */
+       The box is locked to the taller of the two lines BEFORE anything is
+       typed. At a narrow width the first line wraps to two rows and the second
+       does not, so without the lock the buttons underneath would jump when the
+       line changed. Locking to the maximum means the height only ever shrinks
+       into reserved space, and nothing below it moves. */
     var tagline = qs('#tagline');
+    var FIRST = 'Diamonds for the future civilization.';
     var typed = false;
+
     function runWords(delay) {
       if (typed) return;
       typed = true;
       if (!tagline) return;
 
-      var full = (tagline.textContent || '').trim();
-      if (!full) return;
-      if (reduced) { tagline.textContent = full; return; }
+      // The markup carries the final sentence, so a script that never runs
+      // leaves the right line on the page.
+      var FINAL = (tagline.textContent || '').trim();
+      if (!FINAL) return;
+      if (reduced) { tagline.textContent = FINAL; return; }
 
+      function lock() {
+        tagline.style.minHeight = '';
+        tagline.textContent = FIRST;
+        var a = tagline.getBoundingClientRect().height;
+        tagline.textContent = FINAL;
+        var b = tagline.getBoundingClientRect().height;
+        tagline.style.minHeight = Math.max(a, b) + 'px';
+      }
+      lock();
+
+      // The type size is clamped to the viewport, so a resize changes which
+      // line is taller. Re-measure, then put back whatever was on screen.
+      var relock;
+      window.addEventListener('resize', function () {
+        clearTimeout(relock);
+        relock = setTimeout(function () {
+          var held = tagline.textContent;
+          lock();
+          tagline.textContent = held;
+        }, 160);
+      });
+
+      var TYPE = 36, ERASE = 18, HOLD = 900, GAP = 240;
+      var i = 0;
       tagline.textContent = '';
-      var cells = [];
-      for (var i = 0; i < full.length; i++) {
-        var cell = document.createElement('span');
-        cell.className = 'ty';
-        cell.textContent = full.charAt(i);
-        tagline.appendChild(cell);
-        cells.push(cell);
-      }
+      tagline.classList.add('caret');
 
-      var n = 0;
-      function step() {
-        if (n > 0) cells[n - 1].classList.remove('cur');
-        if (n >= cells.length) {
-          var last = cells[cells.length - 1];
-          last.classList.add('cur');
-          setTimeout(function () { last.classList.remove('cur'); }, 1200);
-          return;
-        }
-        var cell = cells[n];
-        cell.className = 'ty on cur';
-        n++;
-        setTimeout(step, cell.textContent === ' ' ? 32 : 46 + Math.random() * 34);
+      function typeFirst() {
+        tagline.textContent = FIRST.slice(0, i);
+        if (i++ < FIRST.length) return setTimeout(typeFirst, TYPE);
+        setTimeout(erase, HOLD);
       }
-      setTimeout(step, delay);
+      function erase() {
+        tagline.textContent = FIRST.slice(0, i);
+        if (i-- > 0) return setTimeout(erase, ERASE);
+        i = 0;
+        setTimeout(typeFinal, GAP);
+      }
+      function typeFinal() {
+        tagline.textContent = FINAL.slice(0, i);
+        if (i++ < FINAL.length) return setTimeout(typeFinal, TYPE);
+        setTimeout(function () { tagline.classList.remove('caret'); }, 1400);
+      }
+      setTimeout(typeFirst, delay);
 
-      // If the tab is backgrounded the timers throttle and the line can sit
-      // half written. Finish it rather than leave a sentence cut in half.
+      // Timers throttle in a background tab, which can strand the line
+      // mid-word or mid-erase. Land it on the final sentence regardless.
+      var runtime = delay + FIRST.length * (TYPE + ERASE) + HOLD + GAP +
+                    FINAL.length * TYPE + 6000;
       setTimeout(function () {
-        cells.forEach(function (c) { c.className = 'ty on'; });
-      }, delay + full.length * 90 + 4000);
+        if (tagline.textContent !== FINAL) tagline.textContent = FINAL;
+        tagline.classList.remove('caret');
+      }, runtime);
     }
     function strip() {
       if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
@@ -674,7 +700,7 @@
   layer(function () {
     if (reduced || !('IntersectionObserver' in window)) return;
     var items = Array.prototype.slice.call(
-      document.querySelectorAll('.band .kicker, .band .h2, .band .lede, .band .sub, .steps, .sheet, .compare, .bay, .figure, .cal, .wl')
+      document.querySelectorAll('.band .kicker, .band .h2, .band .lede, .band .sub, .steps, .sheet, .bay, .figure, .spec, .cal, .wl')
     );
     if (!items.length) return;
     items.forEach(function (el) { el.classList.add('rv'); });
@@ -693,7 +719,7 @@
           });
           step = Math.min(sibs.indexOf(el), 4);
         }
-        el.style.transitionDelay = (step > 0 ? step * 90 : 0) + 'ms';
+        el.style.transitionDelay = (step > 0 ? step * 115 : 0) + 'ms';
         el.classList.add('in');
         io.unobserve(el);
       });

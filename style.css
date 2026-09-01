@@ -160,24 +160,23 @@ body.ready .wordmark { opacity: 1; }
   letter-spacing: -0.015em;
   color: var(--text-2);
 }
-/* One character per cell, all of them in place from the start and only
-   revealed in turn, so the line holds its final box while it types.
-   Inline, never inline-block: inline-block would let a line break between
-   any two letters and pull words apart. */
-.tagline .ty { visibility: hidden; position: relative; }
-.tagline .ty.on { visibility: visible; }
-.tagline .ty.cur::after {
+/* The caret box is always in the line, so removing the caret at the end
+   cannot shift a centred sentence sideways. Only its colour changes. */
+.tagline::after {
   content: '';
-  position: absolute; right: -0.32em; top: 0.08em;
+  display: inline-block;
   width: 1px; height: 1.02em;
+  margin-left: 7px; vertical-align: -0.15em;
+  background: transparent;
+}
+.tagline.caret::after {
   background: var(--ice);
   animation: caret 1.05s steps(1) infinite;
 }
 @keyframes caret { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .tagline .ty { visibility: visible; }
-  .tagline .ty.cur::after { display: none; }
+  .tagline.caret::after { background: transparent; animation: none; }
 }
 
 .cta { display: flex; flex-wrap: wrap; gap: 11px; justify-content: center; margin-top: clamp(30px, 4.2vw, 48px); }
@@ -198,6 +197,23 @@ body.ready #cta { opacity: 1; }
   color: var(--text-3); font-variant-numeric: tabular-nums; padding-top: 8px;
 }
 .band__body { min-width: 0; }
+
+/* Heading left, prose right, everything else across both. The h3x layout: it
+   fills the band instead of leaving the right half of every section empty. */
+@media (min-width: 900px) {
+  .band__body {
+    display: grid;
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1fr);
+    column-gap: 72px;
+    align-items: start;
+  }
+  .band__head { grid-column: 1; }
+  .band__lead { grid-column: 2; }
+  .band__body > *:not(.band__head):not(.band__lead) { grid-column: 1 / -1; }
+  .band__lead .lede { margin-top: 0; max-width: 60ch; }
+  .band__lead .lede + .lede { margin-top: 20px; }
+  .band__head .h2 { max-width: 16ch; }
+}
 .band, .hero { scroll-margin-top: 88px; }
 
 .h2 {
@@ -256,24 +272,6 @@ body.ready #cta { opacity: 1; }
 .steps__t { font-size: var(--t-body); font-weight: 500; }
 .steps__b { font-size: 15px; color: var(--text-2); line-height: 1.58; }
 
-/* ═════════ COMPARE ═════════ */
-.compare {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
-  background: var(--line); border: 1px solid var(--line);
-  border-radius: var(--r-card); overflow: hidden; margin-top: 34px;
-}
-.compare__c { background: var(--panel); padding: var(--pad-card); }
-.compare__c--own { background: var(--panel-2); }
-.compare__k {
-  font-size: var(--t-micro); font-weight: 500; letter-spacing: 0.17em;
-  text-transform: uppercase; color: var(--text-3); margin-bottom: 20px;
-}
-.compare__v {
-  font-family: var(--display); font-size: clamp(23px, 3vw, 31px);
-  font-weight: 300; line-height: 1.14; letter-spacing: -0.028em; max-width: 9ch; color: #fff;
-}
-.compare__b { margin-top: 18px; font-size: 14px; color: var(--text-3); }
-
 /* ═════════ CAL ═════════ */
 .cal {
   display: block;
@@ -311,8 +309,11 @@ body.ready #cta { opacity: 1; }
 .foot__nav a:hover { color: var(--text); }
 
 /* ═════════ REVEAL ═════════ */
-.rv { opacity: 0; transform: translateY(14px); }
-.rv.in { opacity: 1; transform: none; transition: opacity 720ms var(--ease), transform 720ms var(--ease); }
+.rv { opacity: 0; transform: translateY(22px); }
+.rv.in {
+  opacity: 1; transform: none;
+  transition: opacity 980ms var(--ease), transform 980ms var(--ease);
+}
 
 /* ═════════ LEGAL ═════════ */
 .legal { max-width: 700px; margin: 0 auto; padding: 140px 24px 84px; position: relative; z-index: 2; }
@@ -340,7 +341,6 @@ body.ready #cta { opacity: 1; }
 }
 @media (max-width: 620px) {
   .band { padding-left: 20px; padding-right: 20px; }
-  .compare { grid-template-columns: 1fr; }
   .h2 { max-width: none; }
   .cal iframe { height: 640px; }
 }
@@ -352,8 +352,7 @@ body.ready #cta { opacity: 1; }
     animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .wordmark, .tagline span, #cta, .rv, .readout b { opacity: 1 !important; transform: none !important; }
-  .tagline span { clip-path: none !important; -webkit-clip-path: none !important; }
+  .wordmark, #cta, .rv, .readout b { opacity: 1 !important; transform: none !important; }
   #veil, #stage { display: none !important; }
   .hero__stone { visibility: visible !important; }
 }
@@ -476,37 +475,98 @@ body.stone-home .hero__stone { visibility: visible; }
 .cal__alt a:hover { color: var(--text); }
 
 /* ═════════ CHAIN ═════════ */
-.chain {
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  gap: 44px;
-  align-items: start;
-  margin-top: 38px;
-}
+.chain { margin-top: 38px; }
 .steps--chain { margin-top: 0; }
 
 /* ═════════ FIGURES ═════════ */
-.figure { margin: 0; }
+/* A band, not a snapshot. Cropped wide, held to a fixed height, graded down so
+   the blacks sit on the page black, and the left and right edges masked away so
+   the photograph melts into the page instead of ending on a hard rectangle. */
+.figure { margin: 38px 0 0; overflow: hidden; }
 .figure img {
   display: block;
   width: 100%;
-  height: auto;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--r-card);
+  height: clamp(190px, 26vh, 280px);
+  object-fit: cover;
+  object-position: center;
+  filter: contrast(1.12) brightness(0.9) saturate(1.06);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%);
+  transform: scale(1.10);
+  transition: transform 2200ms var(--ease);
+}
+.figure.in img { transform: scale(1); }
+@media (prefers-reduced-motion: reduce) {
+  .figure img { transform: none; transition: none; }
 }
 .figure figcaption {
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid var(--line);
+  margin-top: 16px;
   font-size: var(--t-sm);
   line-height: 1.65;
   color: var(--text-3);
-  max-width: 62ch;
+  max-width: 66ch;
 }
-.figure--wide { margin-top: 38px; }
-.figure--wide figcaption { max-width: 78ch; }
+
+
+/* ═════════ SPECIFICATIONS ═════════
+   Closed until asked for. Native details/summary, so it works with no JS,
+   keyboard opens it, and there is nothing to lag. */
+.spec { margin-top: 28px; border-top: 1px solid var(--line); }
+.spec > summary {
+  display: flex; align-items: center; gap: 11px;
+  padding: 18px 0; cursor: pointer; list-style: none;
+  font-size: var(--t-micro); font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-2);
+  transition: color 170ms var(--ease);
+}
+.spec > summary::-webkit-details-marker { display: none; }
+.spec > summary:hover { color: var(--text); }
+.spec__arrow {
+  width: 7px; height: 7px; flex-shrink: 0;
+  border-right: 1px solid currentColor; border-bottom: 1px solid currentColor;
+  transform: rotate(-45deg); transform-origin: 60% 60%;
+  transition: transform 240ms var(--ease);
+}
+.spec[open] > summary .spec__arrow { transform: rotate(45deg); }
+.spec__body { padding-bottom: 30px; }
+.spec__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 56px; }
+.spec__k {
+  font-size: var(--t-micro); font-weight: 500; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--text-3);
+  padding-bottom: 12px; border-bottom: 1px solid var(--line-2); margin-bottom: 4px;
+}
+.spec__k--wide { margin-top: 34px; }
+.spec__rows { margin: 0; }
+/* label left, value right, same size and weight. Alignment carries it. */
+.spec__rows > div {
+  display: flex; justify-content: space-between; gap: 24px;
+  padding: 10px 0; border-bottom: 1px solid var(--line);
+}
+.spec__rows dt { font-size: 14px; color: var(--text-3); }
+.spec__rows dd {
+  margin: 0; font-size: 14px; color: var(--text-2);
+  text-align: right; font-variant-numeric: tabular-nums;
+}
+.spec__foot {
+  margin-top: 22px; font-size: var(--t-sm); line-height: 1.7;
+  color: var(--text-3); max-width: 74ch;
+}
+
+/* the mark that signs the statement */
+.mark {
+  display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+  color: #2C333B;
+}
+.mark span {
+  font-size: var(--t-micro); font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap;
+}
+.sheet__dec--run { margin-top: 14px; padding-top: 0; border-top: 0; }
 
 @media (max-width: 860px) {
-  .chain { grid-template-columns: 1fr; gap: 32px; }
+  .spec__grid { grid-template-columns: 1fr; gap: 0; }
+  .spec__k--wide { margin-top: 26px; }
+}
+@media (max-width: 720px) {
+  .mark span { display: none; }
 }
