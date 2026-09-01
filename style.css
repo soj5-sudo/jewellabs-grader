@@ -262,16 +262,6 @@ body.ready #cta { opacity: 1; }
 .js .readout b.set { opacity: 1; }
 .bay__foot { margin-top: 20px; font-size: 12px; color: var(--text-3); }
 
-/* ═════════ STEPS ═════════ */
-.steps { list-style: none; margin-top: 38px; border-top: 1px solid var(--line); }
-.steps li {
-  display: grid; grid-template-columns: 44px 112px 1fr; gap: 18px; align-items: baseline;
-  padding: 18px 0; border-bottom: 1px solid var(--line);
-}
-.steps__n { font-size: 12px; color: var(--text-3); font-variant-numeric: tabular-nums; }
-.steps__t { font-size: var(--t-body); font-weight: 500; }
-.steps__b { font-size: 15px; color: var(--text-2); line-height: 1.58; }
-
 /* ═════════ CAL ═════════ */
 .cal {
   display: block;
@@ -336,8 +326,6 @@ body.ready #cta { opacity: 1; }
 @media (max-width: 860px) {
   .band { grid-template-columns: 1fr; gap: 10px; }
   .num { padding-top: 0; }
-  .steps li { grid-template-columns: 36px 1fr; row-gap: 6px; }
-  .steps__b { grid-column: 2; }
 }
 @media (max-width: 620px) {
   .band { padding-left: 20px; padding-right: 20px; }
@@ -475,8 +463,6 @@ body.stone-home .hero__stone { visibility: visible; }
 .cal__alt a:hover { color: var(--text); }
 
 /* ═════════ CHAIN ═════════ */
-.chain { margin-top: 38px; }
-.steps--chain { margin-top: 0; }
 
 /* ═════════ FIGURES ═════════ */
 /* A band, not a snapshot. Cropped wide, held to a fixed height, graded down so
@@ -492,12 +478,19 @@ body.stone-home .hero__stone { visibility: visible; }
   filter: contrast(1.12) brightness(0.9) saturate(1.06);
   -webkit-mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%);
-  transform: scale(1.10);
-  transition: transform 2200ms var(--ease);
+  transform: scale(1.07);
 }
-.figure.in img { transform: scale(1); }
+/* A slow drift across the frame, the way a cut of footage moves rather than a
+   photograph sitting still. Transform only, and it runs only while the band is
+   on screen, so it costs nothing when it is not being looked at. */
+@keyframes drift {
+  0%   { transform: scale(1.07) translate3d(-1.4%, 0, 0); }
+  50%  { transform: scale(1.13) translate3d(1.4%, 0, 0); }
+  100% { transform: scale(1.07) translate3d(-1.4%, 0, 0); }
+}
+.figure.in img { animation: drift 30s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) {
-  .figure img { transform: none; transition: none; }
+  .figure img, .figure.in img { transform: none; animation: none; }
 }
 .figure figcaption {
   margin-top: 16px;
@@ -569,4 +562,89 @@ body.stone-home .hero__stone { visibility: visible; }
 }
 @media (max-width: 720px) {
   .mark span { display: none; }
+}
+
+/* ═════════ FLOW ═════════
+   The whole business as four marks on one line. A connecting hairline draws
+   itself left to right as the section arrives, then each step lifts in behind
+   it. Transform and opacity only, so it runs on the compositor. */
+.flow {
+  list-style: none;
+  margin-top: 52px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0 28px;
+  position: relative;
+}
+/* the rail the steps sit on */
+/* Drawn and visible by default. Only the reveal script, which alone adds .rv,
+   is allowed to hide them, so a script that never runs leaves the diagram on
+   the page rather than four invisible steps. */
+.flow::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 17px;
+  height: 1px;
+  background: var(--line-2);
+  transform-origin: left center;
+}
+.flow.rv::before { transform: scaleX(0); }
+.flow.rv.in::before { transform: scaleX(1); transition: transform 1500ms var(--ease) 120ms; }
+
+.flow__step { position: relative; padding-top: 46px; }
+.flow.rv .flow__step { opacity: 0; transform: translateY(12px); }
+.flow.rv.in .flow__step {
+  opacity: 1; transform: none;
+  transition: opacity 620ms var(--ease), transform 620ms var(--ease);
+}
+.flow.rv.in .flow__step:nth-child(1) { transition-delay: 340ms; }
+.flow.rv.in .flow__step:nth-child(2) { transition-delay: 620ms; }
+.flow.rv.in .flow__step:nth-child(3) { transition-delay: 900ms; }
+.flow.rv.in .flow__step:nth-child(4) { transition-delay: 1180ms; }
+
+/* the mark on the rail, its black fill hiding the line beneath it */
+.flow__glyph {
+  position: absolute; top: 0; left: 0;
+  width: 35px; height: 35px;
+  display: grid; place-items: center;
+  background: var(--bg);
+  color: var(--ice);
+}
+.flow__glyph svg { width: 21px; height: 21px; }
+
+.flow__n {
+  display: block;
+  font-size: var(--t-micro); font-weight: 500; letter-spacing: 0.14em;
+  color: var(--text-3); font-variant-numeric: tabular-nums;
+}
+.flow__t {
+  display: block; margin-top: 9px;
+  font-family: var(--display); font-size: 20px; font-weight: 400;
+  letter-spacing: -0.02em; color: #fff;
+}
+.flow__b {
+  display: block; margin-top: 10px;
+  font-size: 14px; line-height: 1.56; color: var(--text-2);
+  max-width: 26ch;
+}
+
+@media (max-width: 860px) {
+  .flow { grid-template-columns: 1fr; gap: 0; margin-top: 40px; }
+  /* the rail turns vertical when the steps stack */
+  .flow::before {
+    left: 17px; right: auto; top: 0; bottom: 0;
+    width: 1px; height: auto;
+    transform-origin: top center;
+  }
+  .flow.rv::before { transform: scaleY(0); }
+  .flow.rv.in::before { transform: scaleY(1); transition: transform 1500ms var(--ease) 120ms; }
+  .flow__step { padding: 0 0 34px 52px; }
+  .flow__step:last-child { padding-bottom: 0; }
+  .flow__glyph { width: 35px; height: 35px; }
+  .flow__b { max-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow::before, .flow.rv::before, .flow.rv.in::before { transform: none; transition: none; }
+  .flow__step, .flow.rv .flow__step { opacity: 1; transform: none; transition: none; }
 }

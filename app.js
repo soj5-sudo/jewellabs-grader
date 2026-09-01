@@ -700,7 +700,7 @@
   layer(function () {
     if (reduced || !('IntersectionObserver' in window)) return;
     var items = Array.prototype.slice.call(
-      document.querySelectorAll('.band .kicker, .band .h2, .band .lede, .band .sub, .steps, .sheet, .bay, .figure, .spec, .cal, .wl')
+      document.querySelectorAll('.band__head, .band__lead, .band .sub, .flow, .sheet, .bay, .figure, .spec, .cal, .wl')
     );
     if (!items.length) return;
     items.forEach(function (el) { el.classList.add('rv'); });
@@ -725,6 +725,20 @@
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.02 });
     items.forEach(function (el) { io.observe(el); });
+
+    // The drifting photographs keep their animation only while they are on
+    // screen. Off screen it is paused, so nothing is being composited for a
+    // band nobody is looking at.
+    var figs = Array.prototype.slice.call(document.querySelectorAll('.figure'));
+    if (figs.length) {
+      var vis = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          var img = e.target.querySelector('img');
+          if (img) img.style.animationPlayState = e.isIntersecting ? 'running' : 'paused';
+        });
+      }, { rootMargin: '10% 0px' });
+      figs.forEach(function (f) { vis.observe(f); });
+    }
 
     // No blanket timer here on purpose. It fired whenever the visitor had not
     // scrolled yet and opened the whole page at once. This is fail-open by
