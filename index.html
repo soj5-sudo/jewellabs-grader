@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#000000" />
-<link rel="icon" href="favicon.svg?v=33" type="image/svg+xml" sizes="any" />
-<link rel="apple-touch-icon" href="favicon.svg?v=33" />
+<link rel="icon" href="favicon.svg?v=35" type="image/svg+xml" sizes="any" />
+<link rel="apple-touch-icon" href="favicon.svg?v=35" />
 
 <title>Jewel Labs</title>
 <meta name="description" content="Jewel Labs builds automated diamond graders and the machine learning models that run them. A polished stone is read on the desk in seconds, and the EU customs filing is built from the record the machine writes." />
@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Inter:wght@300;400;450;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="style.css?v=33" />
+<link rel="stylesheet" href="style.css?v=35" />
 <script>document.documentElement.classList.add('js')</script>
 
 <script type="application/ld+json">
@@ -125,6 +125,7 @@ setTimeout(function () {
     <dl class="state">
       <div><dt>Software</dt><dd>Running today</dd></div>
       <div><dt>Machine</dt><dd>In development</dd></div>
+      <div><dt>Patent</dt><dd>Provisional filed</dd></div>
     </dl>
   </div>
 </section>
@@ -170,6 +171,41 @@ setTimeout(function () {
         <p class="bay__foot">Illustrative of the record the system writes.</p>
       </div>
     </div>
+
+    <ol class="tracks tracks--heads">
+      <li class="tracks__t">
+        <span class="tracks__k">Vision and geometry</span>
+        <span class="tracks__b">
+          Machine vision around 360 degrees, a microscope camera for inclusions, and structured
+          light for the facet map. Calibrated LED cycles brightfield, darkfield, coaxial and angled,
+          because a stone shows different features under different light.
+        </span>
+      </li>
+      <li class="tracks__t">
+        <span class="tracks__k">Material and weight</span>
+        <span class="tracks__b">
+          A compact spectrometer separates natural from CVD and HPHT and exposes treatments. A
+          365&nbsp;nm pass reads fluorescence. A load cell takes carat to 0.001&nbsp;ct on the same
+          stage, so weight is never rekeyed.
+        </span>
+      </li>
+      <li class="tracks__t">
+        <span class="tracks__k">Heads swap, the record does not</span>
+        <span class="tracks__b">
+          The heads sit on one rail against one calibration. Fit the XRF and ultrasound pair and the
+          same chassis reads gold and silver instead: composition at the surface, density through
+          the core. The software, the agents and the record format are unchanged.
+        </span>
+      </li>
+      <li class="tracks__t">
+        <span class="tracks__k">Provisional patent filed</span>
+        <span class="tracks__b">
+          The provisional covers the full system, the sensing chassis together with the record it
+          writes and the agents that act on it. Competitors sell one step of this each. Parts are
+          off the shelf and sourced across China, Japan, India and Russia, at $3,000 to $7,000 a unit.
+        </span>
+      </li>
+    </ol>
 
     <details class="spec">
       <summary><span class="spec__arrow" aria-hidden="true"></span>Specifications</summary>
@@ -357,6 +393,61 @@ setTimeout(function () {
   </div>
 </section>
 
+<!-- ─────────── 05 WHAT THE SAME MACHINE DOES NEXT ─────────── -->
+<section class="band band--wide" id="next">
+  <div class="band__body">
+    <div class="band__head">
+      <p class="kicker">Same record, wider market</p>
+      <h2 class="h2">What the same machine does next.</h2>
+    </div>
+    <div class="band__lead">
+      <p class="lede">
+        One optimizer, one sensing stack, one record. What changes downstream is the target shape,
+        the material and who signs for it.
+      </p>
+    </div>
+
+    <ol class="tracks">
+      <li class="tracks__t">
+        <span class="tracks__k">Any shape, not just a gem</span>
+        <span class="tracks__b">
+          The cut planner solves for the end use, not only for a jewelry stone. Wafers for thermal
+          conductivity and semiconductor-grade diamond, plates for quantum sensing, cubes for data
+          storage that lasts, flake, and classic gems. Only the target shape changes. About 40% of
+          rough carats survive the cut, so every point of yield is margin.
+        </span>
+      </li>
+      <li class="tracks__t">
+        <span class="tracks__k">Gold and silver, same chassis</span>
+        <span class="tracks__b">
+          An XRF head reads surface composition and flags plating. An ultrasound head reads density
+          through the core, which is what catches filled and tungsten bars. The load cell
+          cross-checks mass against volume. Same agents, same origin papers. Gold above ground is
+          worth about $31 trillion.
+        </span>
+      </li>
+      <li class="tracks__t">
+        <span class="tracks__k">Records that can be tokenized</span>
+        <span class="tracks__b">
+          Every record is hashed on chain when it is written, so a token traces back to one physical
+          stone or one bar rather than to a spreadsheet. Tokenized real-world assets grew fourfold in
+          a year to $26.4&nbsp;billion, and the SEC cleared tokenized securities trading on Nasdaq in
+          March 2026.
+        </span>
+      </li>
+      <li class="tracks__t">
+        <span class="tracks__k">Why the window is open now</span>
+        <span class="tracks__b">
+          Since 1 January 2026 no natural diamond of 0.5&nbsp;ct or above enters the EU without the
+          statement, and Russian lab-grown has been barred since 2024. Where a stone is cut now sets
+          its US tariff. De Beers' rough index fell 12% in 2025 and lab-grown is down as much as 90%,
+          so margin is thin exactly when metals are near multi-year highs.
+        </span>
+      </li>
+    </ol>
+  </div>
+</section>
+
 <!-- ─────────── 05 THE DATASET ─────────── -->
 <section class="band band--wide" id="dataset">
   <div class="band__body">
@@ -450,6 +541,6 @@ setTimeout(function () {
   </div>
 </footer>
 
-<script src="app.js?v=33" defer></script>
+<script src="app.js?v=35" defer></script>
 </body>
 </html>

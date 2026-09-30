@@ -793,3 +793,35 @@ body.stone-home .hero__stone { visibility: visible; }
   filter: contrast(1.04) brightness(1.02) saturate(0.94);
   max-height: 460px;
 }
+
+/* ═════════ TRACKS ═════════
+   Four short blocks on the existing hairline grid. No new visual language:
+   same tracked label, same body colour and measure as the flow steps. */
+.tracks {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 56px;
+  margin-top: 40px;
+  border-top: 1px solid var(--line);
+}
+.tracks__t {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--line);
+}
+.tracks__k {
+  font-size: var(--t-micro); font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--text);
+}
+.tracks__b {
+  font-size: 14.5px; line-height: 1.62; color: var(--text-2); max-width: 46ch;
+}
+@media (max-width: 860px) {
+  .tracks { grid-template-columns: 1fr; gap: 0; }
+  .tracks__b { max-width: none; }
+}
+
+/* the heads sit inside the machine section, so they start tighter than a
+   section-level tracks grid */
+.tracks--heads { margin-top: 34px; }

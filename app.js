@@ -700,7 +700,7 @@
   layer(function () {
     if (reduced || !('IntersectionObserver' in window)) return;
     var items = Array.prototype.slice.call(
-      document.querySelectorAll('.band__head, .band__lead, .band .sub, .sheet, .bay, .figure, .media, .onward, .spec, .cal, .wl')
+      document.querySelectorAll('.band__head, .band__lead, .band .sub, .sheet, .bay, .figure, .tracks, .onward, .spec, .cal, .wl')
     );
     if (!items.length) return;
     items.forEach(function (el) { el.classList.add('rv'); });
