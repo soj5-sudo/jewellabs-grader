@@ -4,64 +4,86 @@
 
 ## What we build
 
-The first ML automated desk diamond grader: software and a portable scanning machine
-that fits on a trading desk and travels in a carry-on. A polished
-stone is scanned under controlled imaging, lighting and sensing conditions. The
-software reads the stone's visual and sensor signature, writes a structured
-fingerprint record, and converts that into an industry-aligned grade.
+An ML automated diamond grading and assorting engine: a desk machine plus the
+software and agents that run it. Stones go in the hopper. Cameras and a
+spectrometer read each one under known light, a model grades it, and an actuator
+drops it in the right bin. Every stone leaves with a record, and the EU customs
+filing is built from that record.
 
-The system grades across every category that determines value: cut, colour, clarity,
-carat, proportions, fluorescence, symmetry, polish, and the other optical and
-material signals that separate a natural stone from a grown one.
+The software runs today. The machine is in development. Patent pending on the
+full system, the sensing chassis together with the record it writes and the
+agents that act on it.
 
-The software can be sold on its own to businesses that already run imaging
-workflows. The machine adds the controlled conditions, the data capture and the
-throughput.
+## The sensing heads
 
-## How it works
-
-1. Load. The stone drops into a sealed chamber, where outside light never reaches it.
-2. Light. Calibrated arrays cycle through brightfield, darkfield and raking light. A 365 nm pass reads fluorescence.
-3. Measure. Structured light maps the facets. A load cell takes carat weight on the same stage.
-4. Separate. A spectrometer reads the optical signature, which is what tells natural from CVD and HPHT.
-5. Grade. The model assigns every category that carries price, each with a confidence value.
-6. Record. A fingerprint record is written, and everything downstream is built from it.
-
-## Throughput
-
-A human grader evaluates one stone at a time and a high volume parcel can take days.
-The machine is designed for parallel scanning at a target throughput of thousands of
-diamonds per hour, turning grading from a manual bottleneck into an automated data
-pipeline.
+- Vision and geometry: machine vision around 360 degrees, a microscope camera for
+  inclusions, structured light for the facet map, calibrated LED cycling
+  brightfield, darkfield, coaxial and angled.
+- Material and weight: a compact spectrometer separates natural from CVD and
+  HPHT and exposes treatments, a 365 nm pass reads fluorescence, and a load cell
+  takes carat to 0.001 ct on the same stage.
+- The heads swap. They sit on one rail against one calibration. Fit the XRF and
+  ultrasound pair and the same chassis reads gold and silver instead. The
+  software, the agents and the record format are unchanged.
 
 ## The chain
 
-The cut plan, the grade and the filing all come off the same record.
+The cut plan, the grade and the filing are all built from one record.
 
-1. The cut plan. A rough scan from the scanner already on the factory floor goes to the model. It returns where the girdle sits, what comes out of the stone and what the yield is.
-2. The grader checks it. The polished stone goes in the box on the desk. The grader reads it and holds the result against the plan it was cut from.
-3. The filing. The record is compared against the Kimberley Process certificate and the commercial invoice. Where they agree, the EU due diligence statement is written and filed. Where they disagree, the parcel stops on the desk instead of at the border.
+1. Cut plan. A rough scan from the scanner already on the factory floor goes to
+   the model, which returns where the girdle sits and what comes out of the stone.
+2. Read. The polished stone goes in the box and is graded in seconds.
+3. Record. One row per stone, permanent, readable by any other system.
+4. File. The record is checked against the Kimberley Process certificate and the
+   commercial invoice, then filed. If they disagree, the parcel stops on the desk
+   instead of at the border.
 
-Every box works off the same record, so a stone read in one office is cleared and filed
-in another with nothing rekeyed.
+## Beyond a jewelry stone
+
+The cut planner solves for the end use, not only for a gem. Wafers for thermal
+conductivity and semiconductor grade diamond, plates for quantum sensing, cubes
+for long term data storage, flake, and classic gems. Only the target shape
+changes. About 40 percent of rough carats survive the cut, so every point of
+yield is margin.
+
+## Metals
+
+XRF reads composition at the surface and flags plating. Ultrasound reads density
+through the core, which is what catches filled and tungsten bars. A load cell
+cross checks mass against volume. Same record, same origin papers. If you trade
+bullion, get in touch.
+
+## Records
+
+Cut plan, grade, price, filing: rough to export on one record. We are pulling the
+commodities onto one rail, and every record is hashed on chain when it is
+written, so it can be tokenized.
+
+## Why now
+
+Since 1 January 2026 no natural diamond of 0.5 ct or above enters the EU without
+a signed origin statement, and Russian lab grown has been barred since 2024.
+Where a stone is cut now sets its US tariff. Rough fell 12 percent in 2025 and
+lab grown is down as much as 90 percent, so margin is thin exactly when metals
+are near multi year highs.
 
 ## The dataset
 
-Every scan writes images, spectra, fluorescence and proportions alongside the machine
-conditions they were taken under. At volume that becomes a structured diamond dataset
-that does not exist today and cannot be built without machines deployed on desks. That
-dataset is the missing data layer for quantum sensing and power semiconductors, which
-need to know which crystals carry the right internal structure.
+Every scan stores images, spectra and proportions against the conditions they
+were measured under. At volume that is a structured diamond dataset that does not
+exist today and cannot be assembled without machines on factory floors. Quantum
+sensing and power semiconductors both run on diamond.
 
 ## Contact
 
-Site: https://grader.jewellabs.io/
+Site: https://hardware.jewellabs.io/
+Also at: https://grader.jewellabs.io/
+Other uses of diamond: https://use.jewellabs.io/
 Parent: https://jewellabs.io/
 Email: soj5@cornell.edu
 Book a demo: https://cal.com/soham-jariwala-4fvbkw/15min
-LinkedIn: https://www.linkedin.com/in/soham-jariwala-18297520a
 
 ## Note
 
-The grading report and due diligence statement shown on the site are specimens
-rendered for demonstration. Neither is a valid certificate.
+The grading report and the origin statement shown on the site are specimens
+rendered for demonstration. Neither is a valid certificate or customs document.
