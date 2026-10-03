@@ -135,11 +135,18 @@
     return pts;
   }
 
-  function project(p, ry, rx, s, cx, cy) {
-    var cY = Math.cos(ry), sY = Math.sin(ry);
+  /* ry and rx do not change inside a frame, so their sin and cos are computed
+     once by the caller and handed in. This was four trig calls per point per
+     frame across three canvases. */
+  function trig(ry, rx) {
+    return { cY: Math.cos(ry), sY: Math.sin(ry), cX: Math.cos(rx), sX: Math.sin(rx) };
+  }
+  function project(p, ry, rx, s, cx, cy, t) {
+    t = t || trig(ry, rx);
+    var cY = t.cY, sY = t.sY;
     var x1 = p[0] * cY + p[2] * sY;
     var z1 = -p[0] * sY + p[2] * cY;
-    var cX = Math.cos(rx), sX = Math.sin(rx);
+    var cX = t.cX, sX = t.sX;
     var y2 = p[1] * cX - z1 * sX;
     var z2 = p[1] * sX + z1 * cX;
     var f = 4.2, k = f / (f - z2);
@@ -266,7 +273,16 @@
       gl.drawArrays(gl.POINTS, 0, COUNT);
       raf = requestAnimationFrame(render);
     }
+    resize();
     raf = requestAnimationFrame(render);
+
+    // resize is a layout read, so it belongs on the resize event, not in the
+    // draw loop where it ran once per frame for the life of the page
+    var rz;
+    window.addEventListener('resize', function () {
+      clearTimeout(rz);
+      rz = setTimeout(resize, 150);
+    });
 
     var hiddenAt = 0;
     document.addEventListener('visibilitychange', function () {
@@ -385,13 +401,17 @@
     if (canvas) { try { ctx = canvas.getContext('2d'); } catch (e) {} }
     if (!canvas || !ctx || !SPRITE || reduced) { handOver(); strip(); runWords(0); return; }
 
-    var W = 0, H = 0, N = 0, gem = [], parts = [];
+    var W = 0, H = 0, N = 0, gem = [], parts = [], heroEl = null;
     var done = false, raf = 0;
 
     function finish() {
       if (done) return;
       done = true;
       cancelAnimationFrame(raf);
+      // the intro is over: stop listening and let its point arrays go
+      window.removeEventListener('pointerdown', skip);
+      window.removeEventListener('keydown', onKey);
+      gem = []; parts = [];
       handOver();
       strip();
       runWords(300);
@@ -437,8 +457,9 @@
     var skipAt = t0 + 700;
 
     function skip() { if (!done && performance.now() >= skipAt) finish(); }
+    function onKey(e) { if (e.key !== 'Tab') skip(); }
     window.addEventListener('pointerdown', skip, { passive: true });
-    window.addEventListener('keydown', function (e) { if (e.key !== 'Tab') skip(); });
+    window.addEventListener('keydown', onKey);
     setTimeout(function () { if (!done) finish(); }, 6800);
 
     raf = requestAnimationFrame(function frame(now) {
@@ -452,9 +473,10 @@
       var out = clamp((el - HOLD) / (GONE - HOLD), 0, 1);
       var ease = easeInOut(out);
 
-      // where the stone lives once the intro is over
+      // where the stone lives once the intro is over. The lookup and the
+      // measurement were running on every frame; the box only moves on resize.
       var slot = null;
-      var hero = document.getElementById('heroGem');
+      var hero = heroEl || (heroEl = document.getElementById('heroGem'));
       if (hero) {
         var hr = hero.getBoundingClientRect();
         if (hr.width > 2) {
@@ -587,6 +609,7 @@
 
     var W = 0, H = 0;
     var pts = seed(window.innerWidth < 720 ? 1400 : 2700);
+    var sweepFill = null, sweepFillW = 0;
     var raf = 0, live = false, t0 = 0;
 
     function size() {
@@ -634,11 +657,14 @@
       ctx.globalCompositeOperation = 'source-over';
 
       if (passing) {
-        var g = ctx.createLinearGradient(0, 0, W, 0);
-        g.addColorStop(0, 'rgba(169,201,232,0)');
-        g.addColorStop(0.5, 'rgba(196,222,248,0.32)');
-        g.addColorStop(1, 'rgba(169,201,232,0)');
-        ctx.fillStyle = g;
+        if (!sweepFill || sweepFillW !== W) {
+          sweepFill = ctx.createLinearGradient(0, 0, W, 0);
+          sweepFill.addColorStop(0, 'rgba(169,201,232,0)');
+          sweepFill.addColorStop(0.5, 'rgba(196,222,248,0.32)');
+          sweepFill.addColorStop(1, 'rgba(169,201,232,0)');
+          sweepFillW = W;
+        }
+        ctx.fillStyle = sweepFill;
         ctx.fillRect(0, sweepY, W, Math.max(1, D));
       }
 
@@ -696,6 +722,33 @@
     up();
   });
 
+  /* ══════════════ CLIPS ══════════════
+     This used to live at the bottom of the reveal layer, behind its early
+     return, so under reduced motion it never ran and the clip autoplayed for
+     the life of the page. It is its own layer now. */
+  layer(function () {
+    var vids = Array.prototype.slice.call(document.querySelectorAll('video'));
+    if (!vids.length) return;
+
+    if (reduced) {
+      vids.forEach(function (v) {
+        v.removeAttribute('autoplay'); v.removeAttribute('loop'); v.pause();
+      });
+      return;
+    }
+    if (!('IntersectionObserver' in window)) return;
+
+    // a clip off screen is decoded frames nobody is watching
+    var vo = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        var v = e.target;
+        if (e.isIntersecting) { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); }
+        else v.pause();
+      });
+    }, { rootMargin: '10% 0px' });
+    vids.forEach(function (v) { vo.observe(v); });
+  });
+
   /* ══════════════ SECTION REVEAL ══════════════ */
   layer(function () {
     if (reduced || !('IntersectionObserver' in window)) return;
@@ -735,22 +788,9 @@
         es.forEach(function (e) {
           var img = e.target.querySelector('img');
           if (img) img.style.animationPlayState = e.isIntersecting ? 'running' : 'paused';
-          // a clip off screen is decoded frames nobody is watching
-          var vid = e.target.querySelector('video');
-          if (vid && !reduced) {
-            if (e.isIntersecting) { var pr = vid.play(); if (pr && pr.catch) pr.catch(function () {}); }
-            else vid.pause();
-          }
         });
       }, { rootMargin: '10% 0px' });
       figs.forEach(function (f) { vis.observe(f); });
-    }
-
-    // reduced motion keeps the poster frame and never starts the clip
-    if (reduced) {
-      Array.prototype.forEach.call(document.querySelectorAll('video'), function (v) {
-        v.removeAttribute('autoplay'); v.removeAttribute('loop'); v.pause();
-      });
     }
 
     // No blanket timer here on purpose. It fired whenever the visitor had not
@@ -779,11 +819,13 @@
       steps.forEach(function (s) { s.classList.remove('on'); });
     }
 
+    var span = 0;
+    function measure() { span = pin.offsetHeight - window.innerHeight; }
+
     function frame() {
       raf = 0;
-      var box = pin.getBoundingClientRect();
-      var span = pin.offsetHeight - window.innerHeight;
       if (span <= 0) return;
+      var box = pin.getBoundingClientRect();
       var p = clamp(-box.top / span, 0, 1);
 
       // the rail is the scroll position, drawn
@@ -808,6 +850,7 @@
           flow.classList.add('flow--scroll');
           window.addEventListener('scroll', onScroll, { passive: true });
         }
+        measure();
         frame();
       } else if (on) {
         on = false;
